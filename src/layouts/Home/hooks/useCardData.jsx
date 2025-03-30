@@ -12,6 +12,11 @@ export const useCardsData = () => {
         // { id: 3, name: "Alertamiento" },
         { id: 5, name: "Analitica ML" },
         { id: 4, name: "IA Generativa" },
+        { id: 6, name: "IA Generativa" },
+        { id: 7, name: "IA Generativa" },
+        { id: 8, name: "IA Generativa" },
+        { id: 9, name: "IA Generativa" },
+        { id: 10, name: "IA Generativa" },
 
       ];
       setCardsData(data);

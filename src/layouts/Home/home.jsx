@@ -56,12 +56,12 @@ function Home() {
                         <Title level={2} style={{ marginBottom: 0, color: "white" }}>Filtros</Title>
                         <Alert
                             message="info"
-                            description="Filtros no disponibles."
+                            description="Filtros no disponibles vesion de pruebas iberoamericana."
                             type="info"
                             showIcon
                         />
                     </div>
-                    <div style={{ display: "flex", flexWrap: "wrap", marginTop: 40, width: "80%" }}>
+                    <div style={{ display: "flex", flexWrap: "wrap", width: "80%", overflow: "auto", height: "80vh"}}>
                         <Cards />
                     </div>
                 </div>

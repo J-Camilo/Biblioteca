@@ -6,7 +6,7 @@ import { useMouseEffect } from "../hooks/useMouseEffect";
 const { Title } = Typography;
 
 const styleCardApp = {
-    margin: 20,
+    margin: 15,
     cursor: "pointer",
     borderRadius: 25,
     width: "210px",
