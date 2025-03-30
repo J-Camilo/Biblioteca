@@ -2,6 +2,9 @@ import Particles from './components/Backgorund/BackgroundIndex'
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sign from './layouts/Autentification/Login';
+import { AuthProvider } from './context/AuthContext';
+import Home from './layouts/Home/home';
+import ProtectedRoute from './ProtectedRoute';
 
 
 function App() {
@@ -21,13 +24,20 @@ function App() {
         />
       </div>
 
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <Routes>
-          {/* <Route path="/" element={<Home />} />*/}
-          <Route path="/login" element={<Sign />} />
-          {/* <Route path="/payment" element={<Payment />} />  */}
-        </Routes>
-      </div>
+      <AuthProvider>
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <Routes>
+            {/* Ruta pública para el login */}
+            <Route path="/login" element={<Sign />} />
+
+            {/* Rutas protegidas */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<Home />} />
+              {/* <Route path="/payment" element={<Payment />} /> */}
+            </Route>
+          </Routes>
+        </div>
+      </AuthProvider>
     </Router>
   )
 }
