@@ -1,11 +1,12 @@
+import { Button } from "antd";
 import React, { useState } from "react";
 
 const BookStep = ({ onDataChange }) => {
   // Estado inicial
-  const [availableQuantity, setAvailableQuantity] = useState(10); // Cantidad disponible inicial
-  const [purchaseQuantity, setPurchaseQuantity] = useState(0); // Cantidad de compra inicial
-  const bookPrice = 50; // Precio del libro
-  const ivaRate = 0.019; // Tasa de IVA
+  const [availableQuantity, setAvailableQuantity] = useState(10);
+  const [purchaseQuantity, setPurchaseQuantity] = useState(1); 
+  const bookPrice = 50;
+  const ivaRate = 0.019;
 
   // Función para calcular el total (subtotal + IVA)
   const calculateTotal = (quantity) => {
@@ -59,13 +60,13 @@ const BookStep = ({ onDataChange }) => {
 
       {/* Contador */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <button onClick={decreaseQuantity} disabled={purchaseQuantity === 0}>
+        <Button onClick={decreaseQuantity} disabled={purchaseQuantity === 0}>
           -
-        </button>
+        </Button>
         <span>{purchaseQuantity}</span>
-        <button onClick={increaseQuantity} disabled={availableQuantity === 0}>
+        <Button onClick={increaseQuantity} disabled={availableQuantity === 0}>
           +
-        </button>
+        </Button>
       </div>
 
       {/* Total */}

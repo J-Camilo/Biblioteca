@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Button, Typography, Input, Card, Alert } from "antd";
+import React from "react";
+import { Button, Typography } from "antd";
 
 import { BookOutlined, LogoutOutlined, } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import StepperPay from "./components/stepperPay";
 const { Title } = Typography;
+
+import imgPay from "../../assets/undraw_add-to-cart_c8f2.svg"
 
 function Payment() {
     const navigate = useNavigate();
@@ -41,8 +43,9 @@ function Payment() {
                         <p>Usuario</p>
                     </div>
                 </div>
-                <div style={{ display: "flex", gap: 10, height: "60vh" }}>
-                        <StepperPay />
+                <div style={{ display: "flex", justifyContent: "space-around", gap: 10,marginTop: 30, height: "60vh" }}>
+                    {/* <img src={imgPay} alt="imgPay" style={{width: "40%"}}/> */}
+                    <StepperPay />
                 </div>
             </div>
         </div>

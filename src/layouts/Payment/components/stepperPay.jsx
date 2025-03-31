@@ -13,16 +13,12 @@ function StepperPay() {
     return (
         <Stepper
             initialStep={1}
-            onStepChange={(step) => {
-                console.log(step);
-            }}
             onNextStep={(currentStep, nextStep, validateStep) => {
                 if (currentStep === 2) {
                     validateStep(() => true);
                 }
             }}
             onFinalStepCompleted={() => {
-                console.log("Completado!");
                 generatePDF(); 
                 navigate("/"); 
               }}

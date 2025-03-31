@@ -4,10 +4,9 @@ import { Form, Input, Row, Col, message } from "antd";
 const PaymentForm = ({ onChange, onValidationChange }) => {
   const [form] = Form.useForm();
 
-  // Notifica al padre cuando cambian los valores del formulario
   const handleValuesChange = (changedValues, allValues) => {
     if (onChange) {
-      onChange(allValues); // Envía todos los valores actuales del formulario
+      onChange(allValues); 
     }
   };
 
@@ -16,10 +15,10 @@ const PaymentForm = ({ onChange, onValidationChange }) => {
     form
       .validateFields()
       .then(() => {
-        onValidationChange(true); // El formulario es válido
+        onValidationChange(true); 
       })
       .catch((errors) => {
-        onValidationChange(false); // El formulario no es válido
+        onValidationChange(false); 
         message.error("Por favor, completa todos los campos obligatorios.");
       });
   };

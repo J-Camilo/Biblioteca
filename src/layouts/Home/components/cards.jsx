@@ -46,7 +46,7 @@ function Cards() {
     return (
         cardsData.map((card, index) =>
             visibleCards.includes(index) ? (
-                <Tooltip title="Toca para editar">
+                <Tooltip title="Toca para ver">
                     <Card
                         key={card.id}
                         style={{ ...styleCardApp, ...styles[card.id] }}
@@ -54,7 +54,7 @@ function Cards() {
                         onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
                         onClick={() => handleCardClick()}
                     >
-                        <img src={imageprueba} alt="Image" style={{ width: "200px", borderRadius: 15 }} />
+                        <img src={imageprueba} alt="Image" style={{ width: "200px", borderRadius: 20 }} />
                         <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center" }}>
                             {card.name}
                         </Title>
@@ -71,6 +71,13 @@ function Cards() {
                                 onClick={() => navigate("/payment")} 
                             >
                                 Comprar
+                            </Button>
+                            <Button
+                                type="primary"
+                                icon={<PayCircleOutlined />}
+                                onClick={() => navigate("/payment")} 
+                            >
+                                Eliminar
                             </Button>
                         </div>
                     </Card>
