@@ -37,6 +37,10 @@
   /* Duración y timing function */
 }
 
+/* .ant-card, .ant-card-body {
+  padding: 0 !important;
+} */
+
 /*----------------------- scroll -----------------------------*/
 
 ::-webkit-scrollbar {

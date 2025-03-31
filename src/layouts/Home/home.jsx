@@ -20,7 +20,7 @@ function Home() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backdropFilter: "blur(3px)",
+            backdropFilter: "blur(4px)",
         }}>
             {/* <div style={{ display: "flex", gap: 10, alignItems: "center", background: "white", padding: 7, borderRadius: 10}} className="fade-in-up">
                 <Title level={5} style={{ marginBottom: 0}}>Cargando contenido</Title>

@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { Button, Typography, Card, Tooltip } from "antd";
 import { useCardsData } from "../hooks/useCardData";
 import { useMouseEffect } from "../hooks/useMouseEffect";
+import { Button, Typography, Card, Tooltip } from "antd";
+import { AuditOutlined, PayCircleOutlined } from "@ant-design/icons";
+import imageprueba from "../../../assets/Screenshot 2025-03-30 144759.png"
 
 const { Title } = Typography;
 
@@ -23,6 +26,7 @@ const styleCardApp = {
 
 function Cards() {
     const { cardsData, visibleCards } = useCardsData();
+    const navigate = useNavigate();
 
     const {
         handleMouseMoveCardApp,
@@ -42,7 +46,7 @@ function Cards() {
     return (
         cardsData.map((card, index) =>
             visibleCards.includes(index) ? (
-                <Tooltip title="Toca para ver más de esta categoria">
+                <Tooltip title="Toca para editar">
                     <Card
                         key={card.id}
                         style={{ ...styleCardApp, ...styles[card.id] }}
@@ -50,9 +54,25 @@ function Cards() {
                         onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
                         onClick={() => handleCardClick()}
                     >
-                        <Title level={3} style={{ color: "white", marginBottom: 0, textAlign: "center" }}>
+                        <img src={imageprueba} alt="Image" style={{ width: "200px", borderRadius: 15 }} />
+                        <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center" }}>
                             {card.name}
                         </Title>
+                        <div>
+                            <Button
+                                type="primary"
+                                icon={<AuditOutlined />}
+                            >
+                                Rentar
+                            </Button>
+                            <Button
+                                type="primary"
+                                icon={<PayCircleOutlined />}
+                                onClick={() => navigate("/payment")} 
+                            >
+                                Comprar
+                            </Button>
+                        </div>
                     </Card>
                 </Tooltip>
             ) : null

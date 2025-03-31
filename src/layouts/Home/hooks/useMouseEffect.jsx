@@ -5,30 +5,6 @@ export const useMouseEffect = () => {
   const [stylePerfil, setStylePerfil] = useState({});
   const [styleConfiguracion, setStyleConfiguracion] = useState({});
 
-  // Mouse Move Effects
-  const handleMouseMove = (e, setStyle) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    const shadowX = (x / rect.width) * 20;
-    const shadowY = (y / rect.height) * 20;
-
-    setStyle({
-      transform: `rotateY(${x / 10}deg) rotateX(${y / 10}deg) scale(1.1)`,
-      boxShadow: `${shadowX}px ${shadowY}px 30px #22557b`,
-      transition: "transform 0.1s, box-shadow 0.1s",
-    });
-  };
-
-  const handleMouseLeave = (setStyle) => {
-    setStyle({
-      transform: "rotateY(0deg) rotateX(0deg) scale(1)",
-      boxShadow: "0px 0px 10px #22557b",
-      transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    });
-  };
-
   // Card Hover Effects
   const handleMouseMoveCardApp = (e, id) => {
     const card = e.currentTarget;
@@ -60,8 +36,6 @@ export const useMouseEffect = () => {
   };
 
   return {
-    handleMouseMove,
-    handleMouseLeave,
     handleMouseMoveCardApp,
     handleMouseLeaveCardApp,
     styles,

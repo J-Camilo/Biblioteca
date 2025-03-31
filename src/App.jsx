@@ -1,10 +1,12 @@
 import Particles from './components/Backgorund/BackgroundIndex'
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sign from './layouts/Autentification/Login';
 import { AuthProvider } from './context/AuthContext';
+
 import Home from './layouts/Home/home';
 import ProtectedRoute from './ProtectedRoute';
+import Payment from './layouts/Payment/payment';
+import Sign from './layouts/Autentification/Login';
 
 
 function App() {
@@ -15,7 +17,7 @@ function App() {
         <Particles
           particleColors={['#ffffff', '#ffffff']}
           particleCount={500}
-          particleSpread={10}
+          particleSpread={6}
           speed={0.1}
           particleBaseSize={210}
           moveParticlesOnHover={true}
@@ -33,7 +35,7 @@ function App() {
             {/* Rutas protegidas */}
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
-              {/* <Route path="/payment" element={<Payment />} /> */}
+              <Route path="/payment" element={<Payment />} />
             </Route>
           </Routes>
         </div>
