@@ -53,12 +53,12 @@ function Sign() {
 
                         <Title level={3} style={{ marginBottom: 20 }}>Inicio de sesión</Title>
                         <Form.Item
-                            name="email"
-                            rules={[{ required: true, message: 'Por favor ingresa tu email.' }]}
+                            name="username"
+                            rules={[{ required: true, message: 'Por favor ingresa tu username.' }]}
                         >
-                            <Input prefix={<UserOutlined />} placeholder="Correo" name="email" value={formData.email} onChange={handleChange} />
+                            <Input prefix={<UserOutlined />} placeholder="Correo" name="username" value={formData.username} onChange={handleChange} />
                         </Form.Item>
-                        {errors.email && <p style={{ color: 'red' }} className="fade-in-login">{errors.email}</p>}
+                        {errors.username && <p style={{ color: 'red' }} className="fade-in-login">{errors.username}</p>}
                         {showPasswordInput && (
                             <Form.Item
                                 name="Contraseña"
