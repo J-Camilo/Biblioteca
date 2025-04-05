@@ -4,71 +4,19 @@ import imgLogo from "../../assets/Screenshot 2025-03-30 144759.png";
 import { Button, Card, Form, Input, Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import BlurText from "../../components/TextBlur/textBlur";
+import { useAuth } from "../../context/AuthContext";
+import { useValidations } from "./hooks/useValidatios";
 const { Title } = Typography;
 // import useLogin from "./hooks/post";
 
 function Sign() {
-    const [formData, setFormData] = useState({ email: '', password: '' });
-    const [errors, setErrors] = useState({ email: '', password: '' });
-    const [showPasswordInput, setShowPasswordInput] = useState(false);
-    const [showSignInButton, setShowSignInButton] = useState(false);
-    const [showForm, setShowForm] = useState(false);
 
-    //   const { login, loading, setLoading, error } = useLogin(); // Usa el hook
+    const { formData, handleChange, handleAnimationComplete, showSignInButton, showPasswordInput, showForm, errors} = useValidations(); // Usa el hook
+    const { login } = useAuth();
     let loading = false;
 
-    useEffect(() => {
-        const emailTimeout = setTimeout(() => {
-            validateField('email', formData.email);
-        }, 500);
-
-        return () => clearTimeout(emailTimeout);
-    }, [formData.email]);
-
-    useEffect(() => {
-        if (showPasswordInput) {
-            const passwordTimeout = setTimeout(() => {
-                validateField('password', formData.password);
-            }, 500);
-
-            return () => clearTimeout(passwordTimeout);
-        }
-    }, [formData.password, showPasswordInput]);
-
-    const handleAnimationComplete = () => {
-        setTimeout(() => {
-            setShowForm(true);
-        }, 1000);
-    };
-
-    const validateField = (field, value) => {
-        let error = '';
-        if (field === 'email') {
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                error = 'Por favor ingresa un correo válido.';
-                setShowPasswordInput(false);
-            } else {
-                setShowPasswordInput(true);
-            }
-        } else if (field === 'password') {
-            if (value.length < 4) {
-                error = 'La contraseña debe tener al menos 4 caracteres.';
-                setShowSignInButton(false);
-            } else {
-                setShowSignInButton(true);
-            }
-        }
-        setErrors(prevErrors => ({ ...prevErrors, [field]: error }));
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevData => ({ ...prevData, [name]: value }));
-    };
-
     const handleSubmit = (e) => {
-        // e.preventDefault();
-        // login(formData.email, formData.password);
+        login();
     };
 
     return (
@@ -105,12 +53,12 @@ function Sign() {
 
                         <Title level={3} style={{ marginBottom: 20 }}>Inicio de sesión</Title>
                         <Form.Item
-                            name="email"
-                            rules={[{ required: true, message: 'Por favor ingresa tu email.' }]}
+                            name="username"
+                            rules={[{ required: true, message: 'Por favor ingresa tu username.' }]}
                         >
-                            <Input prefix={<UserOutlined />} placeholder="Correo" name="email" value={formData.email} onChange={handleChange} />
+                            <Input prefix={<UserOutlined />} placeholder="Correo" name="username" value={formData.username} onChange={handleChange} />
                         </Form.Item>
-                        {errors.email && <p style={{ color: 'red' }} className="fade-in-login">{errors.email}</p>}
+                        {errors.username && <p style={{ color: 'red' }} className="fade-in-login">{errors.username}</p>}
                         {showPasswordInput && (
                             <Form.Item
                                 name="Contraseña"
