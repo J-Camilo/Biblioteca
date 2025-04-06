@@ -7,7 +7,6 @@ import BlurText from "../../components/TextBlur/textBlur";
 import { useAuth } from "../../context/AuthContext";
 import { useValidations } from "./hooks/useValidatios";
 const { Title } = Typography;
-// import useLogin from "./hooks/post";
 
 function Sign() {
 
@@ -16,7 +15,7 @@ function Sign() {
     let loading = false;
 
     const handleSubmit = (e) => {
-        login();
+        login(formData);
     };
 
     return (

@@ -1,5 +1,6 @@
 import { createContext, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../services/auth";
 
 const AuthContext = createContext();
 
@@ -10,7 +11,8 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   // Función para iniciar sesión
-  const login = () => {
+  const sesion = async (credentials) => {
+    await login(credentials);
     setIsAuthenticated(true);
     navigate("/"); 
   };
@@ -22,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, sesion, logout }}>
       {children}
     </AuthContext.Provider>
   );
