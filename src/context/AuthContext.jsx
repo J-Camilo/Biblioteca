@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Función para cerrar sesión
-  const logout = () => {
+  const sesionOut = () => {
     sessionStorage.removeItem('auth');
     removeCookie('auth'); 
     navigate('/login');
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     isAuthenticated: !!sessionStorage.getItem('auth'), 
     sesion,
-    logout,
+    sesionOut,
   };
 
   return (
