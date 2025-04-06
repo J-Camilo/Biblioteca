@@ -1,10 +1,28 @@
 import { Button } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getBookById } from "../../../services/books";
+import { useParams } from "react-router-dom";
 
 const BookStep = ({ onDataChange }) => {
+
+  const { idbook } = useParams();
+  const [oneBook, setOneBook] = useState('');
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const books = await getBookById(idbook);
+      setOneBook(books);
+    };
+    fetchData();
+  }, []);
+
+  console.log(oneBook);
+
+
   // Estado inicial
   const [availableQuantity, setAvailableQuantity] = useState(10);
-  const [purchaseQuantity, setPurchaseQuantity] = useState(1); 
+  const [purchaseQuantity, setPurchaseQuantity] = useState(1);
   const bookPrice = 50;
   const ivaRate = 0.019;
 

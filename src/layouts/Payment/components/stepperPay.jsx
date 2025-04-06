@@ -8,7 +8,7 @@ import Stepper, { Step } from "../../../components/Steper/Stepper";
 
 function StepperPay() {
     const navigate = useNavigate();
-    const { formData, bookData, handleFormChange, handleBookDataChange, generatePDF } = usePaymentLogic();
+    const { handleFormChange, handleBookDataChange, generatePDF } = usePaymentLogic();
 
     return (
         <Stepper

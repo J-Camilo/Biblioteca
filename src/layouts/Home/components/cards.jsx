@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useCardsData } from "../hooks/useCardData";
 import { useMouseEffect } from "../hooks/useMouseEffect";
 import { Button, Typography, Card, Tooltip } from "antd";
-import { AuditOutlined, PayCircleOutlined } from "@ant-design/icons";
+import { AuditOutlined, DeleteOutlined, PayCircleOutlined } from "@ant-design/icons";
 import imageprueba from "../../../assets/Screenshot 2025-03-30 144759.png"
+import { deleteBook } from "../../../services/books";
 
 const { Title } = Typography;
 
@@ -13,7 +14,7 @@ const styleCardApp = {
     cursor: "pointer",
     borderRadius: 25,
     width: "210px",
-    height: "320px",
+    height: "340px",
     background: "black",
     display: "flex",
     boxShadow: "0px 0px 10px #22557b",
@@ -25,7 +26,7 @@ const styleCardApp = {
 };
 
 function Cards() {
-    const { cardsData, visibleCards } = useCardsData();
+    const { cardsData, visibleCards, refreshData } = useCardsData();
     const navigate = useNavigate();
 
     const {
@@ -43,6 +44,10 @@ function Cards() {
         // }, 2000);
     };
 
+    const truncateText = (text, maxLength) => {
+        return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+    };
+
     return (
         cardsData.map((card, index) =>
             visibleCards.includes(index) ? (
@@ -54,29 +59,23 @@ function Cards() {
                         onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
                         onClick={() => handleCardClick()}
                     >
+                        {/* Imagen */}
                         <img src={imageprueba} alt="Image" style={{ width: "200px", borderRadius: 20 }} />
-                        <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center" }}>
-                            {card.name}
+
+                        {/* Título */}
+                        <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center", overflow: "hidden" }}>
+                            <span className="animated-text">{truncateText(card.name, 20)}</span>
                         </Title>
-                        <div>
-                            <Button
-                                type="primary"
-                                icon={<AuditOutlined />}
-                            >
+
+                        {/* Botones */}
+                        <div style={{ display: 'flex', flexDirection:"column", marginTop: '10px' }}>
+                            <Button type="primary" icon={<AuditOutlined />} onClick={() => console.log('Rentar')}>
                                 Rentar
                             </Button>
-                            <Button
-                                type="primary"
-                                icon={<PayCircleOutlined />}
-                                onClick={() => navigate("/payment")} 
-                            >
+                            <Button type="primary" icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${card.id}`)}>
                                 Comprar
                             </Button>
-                            <Button
-                                type="primary"
-                                icon={<PayCircleOutlined />}
-                                onClick={() => navigate("/payment")} 
-                            >
+                            <Button type="primary" icon={<DeleteOutlined />} onClick={() => {refreshData(); deleteBook(card.id)}}>
                                 Eliminar
                             </Button>
                         </div>

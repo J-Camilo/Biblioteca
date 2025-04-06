@@ -1,28 +1,47 @@
 import { useEffect, useState } from "react";
+import { getAllBooks } from "../../../services/books";
 
 export const useCardsData = () => {
+  const [refesh, setRefesh] = useState(0);
+  const [search, setSearch] = useState('');
   const [cardsData, setCardsData] = useState([]);
   const [visibleCards, setVisibleCards] = useState([]);
 
+  const refreshData = () => {
+    setRefesh((prev) => prev + 1); 
+  }
+
+  
   useEffect(() => {
     const fetchData = async () => {
-      const data = [
-        { id: 1, name: "BI" },
-        { id: 2, name: "Fotos" },
-        // { id: 3, name: "Alertamiento" },
-        { id: 5, name: "Analitica ML" },
-        { id: 4, name: "IA Generativa" },
-        { id: 6, name: "IA Generativa" },
-        { id: 7, name: "IA Generativa" },
-        { id: 8, name: "IA Generativa" },
-        { id: 9, name: "IA Generativa" },
-        { id: 10, name: "IA Generativa" },
-
-      ];
-      setCardsData(data);
+      const books = await getAllBooks();
+      setCardsData(books);
     };
     fetchData();
-  }, []);
+  }, [refesh]);
+
+  const handleSearch = (value) => {
+    const normalizedSearch = value.toLowerCase(); // Normalizar la búsqueda a minúsculas
+    const filtered = cardsData.filter((book) => {
+      const bookName = book.name.toLowerCase();
+      const bookISBN = book.ISBN.toLowerCase();
+      return (
+        bookName.includes(normalizedSearch) ||
+        bookISBN.includes(normalizedSearch)
+      );
+    });
+    setCardsData(filtered);
+
+    // Reiniciar las tarjetas visibles al filtrar
+    setVisibleCards([]);
+    setTimeout(() => {
+      filtered.forEach((_, index) => {
+        setTimeout(() => {
+          setVisibleCards((prev) => [...prev, index]);
+        }, index * 200);
+      });
+    }, 100);
+  };
 
   useEffect(() => {
     const revealCards = () => {
@@ -35,5 +54,5 @@ export const useCardsData = () => {
     revealCards();
   }, [cardsData]);
 
-  return { cardsData, visibleCards };
+  return { cardsData, visibleCards, search, setSearch, handleSearch, refreshData };
 };

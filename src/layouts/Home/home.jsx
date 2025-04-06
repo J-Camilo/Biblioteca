@@ -9,17 +9,19 @@ const { Title } = Typography;
 
 import imgPay from "../../assets/icons8-loading.gif";
 import { getDecryptedCookie } from "../../utils/cookieManager";
+import { useCardsData } from "./hooks/useCardData";
 
 function Home() {
     const { sesionOut } = useAuth();
     const userData = getDecryptedCookie("auth");
     const [isContentLoaded, setIsContentLoaded] = useState(false);
-    console.log(userData.user);
-    
+
+    const { search, setSearch, handleSearch } = useCardsData();
+
     // Temporizador para simular la carga
     useEffect(() => {
         const timer = setTimeout(() => {
-            setIsContentLoaded(true); 
+            setIsContentLoaded(true);
         }, 1500);
 
         return () => clearTimeout(timer);
@@ -55,6 +57,13 @@ function Home() {
                     <div style={{ padding: 20, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 30 }} className="fade-in-up">
                         <Title level={2} style={{ marginBottom: 0, color: "white", borderLeft: "white 2px solid", paddingLeft: 10 }}>Lista de libros <BookOutlined /></Title>
                         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                            <Search
+                                placeholder="Busca el libro"
+                                enterButton="Buscar"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                onSearch={handleSearch}
+                            />
                             <Button
                                 type="primary"
                                 icon={<PlusOutlined />}
@@ -67,8 +76,6 @@ function Home() {
                             >
                                 Prestamos
                             </Button>
-                            <Search placeholder="Busca el libro" enterButton="Buscar" loading />
-                            <p style={{textTransform: "capitalize"}}>{userData.user.name}</p>
                             <Button
                                 type="primary"
                                 icon={<LogoutOutlined />}
@@ -76,6 +83,7 @@ function Home() {
                             >
                                 Cerrar sesión
                             </Button>
+                            <p style={{ textTransform: "capitalize" }}>{userData.user.name}</p>
                         </div>
                     </div>
                     <div style={{ display: "flex", gap: 10, height: "60vh" }}>
