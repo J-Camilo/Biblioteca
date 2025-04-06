@@ -1,4 +1,3 @@
-// apiEndpoints.js
 export const API_ENDPOINTS = {
     USERS: {
       ALL: '/users',
