@@ -51,11 +51,7 @@ export const useCardsData = () => {
       date_deliver: formattedReturnDate
     }
     try {
-      const response = await lendBook(lendData);
-
-      // if (!response.success) {
-      //   throw new Error(response.message || "Error al registrar el préstamo");
-      // }
+      await lendBook(lendData);
 
       generateLoanPDF(value);
       window.location.reload();
