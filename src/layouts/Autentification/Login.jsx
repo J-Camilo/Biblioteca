@@ -3,6 +3,7 @@ import imgLogo from "../../assets/Screenshot 2025-03-30 144759.png";
 
 import { Button, Card, Form, Input, Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import BlurText from "../../components/TextBlur/textBlur";
 import { useValidations } from "./hooks/useValidatios";
 import { useAuth } from "../../context/AuthContext";
 const { Title } = Typography;
@@ -28,9 +29,9 @@ function Sign() {
             top: 0,
             left: 0
         }}>
-            {/* {!showForm ?
+            {!showForm ?
                 <BlurText
-                    text={"Encruentra todos tus libros de una manera unica" || ''}
+                    text={"Encruentra todos tus libros de una manera unica" || 'Default text'}
                     delay={30}
                     animateBy="letters"
                     fontSize={50}
@@ -38,7 +39,7 @@ function Sign() {
                     onAnimationComplete={handleAnimationComplete}
                     className="text-8xl mb-8"
                 />
-                : */}
+                :
                 <Card style={{ width: 400, borderRadius: 20 }} className="fade-in-up">
                     <Form
                         name="login"
@@ -75,7 +76,7 @@ function Sign() {
                         )}
                     </Form>
                 </Card>
-            {/* }k */}
+            }
         </div>
     );
 }
