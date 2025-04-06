@@ -31,7 +31,7 @@ function Sign() {
         }}>
             {!showForm ?
                 <BlurText
-                    text="Encruentra todos tus libros de una manera unica"
+                    text={"Encruentra todos tus libros de una manera unica" || ''}
                     delay={30}
                     animateBy="letters"
                     fontSize={50}
