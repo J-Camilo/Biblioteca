@@ -3,7 +3,6 @@ import imgLogo from "../../assets/Screenshot 2025-03-30 144759.png";
 
 import { Button, Card, Form, Input, Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import BlurText from "../../components/TextBlur/textBlur";
 import { useValidations } from "./hooks/useValidatios";
 import { useAuth } from "../../context/AuthContext";
 const { Title } = Typography;
