@@ -45,11 +45,11 @@ export const useCardsData = () => {
 
   const lend = async (value) => {
     const lendData = {
-        user_id: 1,
-        book_id: value.id,
-        date_lend: formattedLoanDate,
-        date_deliver: formattedReturnDate
-      }
+      user_id: 1,
+      book_id: value.id,
+      date_lend: formattedLoanDate,
+      date_deliver: formattedReturnDate
+    }
     try {
       const response = await lendBook(lendData);
 
@@ -59,7 +59,7 @@ export const useCardsData = () => {
 
       generateLoanPDF(value);
     } catch (error) {
-      setAlert({ type: "error", message: error.response.data.detail|| "Error inesperado" });
+      setAlert({ type: "error", message: error.response.data.detail || "Error inesperado" });
       setShowAlert(true);
     }
   };

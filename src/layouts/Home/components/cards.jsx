@@ -100,7 +100,7 @@ function Cards() {
                 <div style={{ padding: 15 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <strong>Nombre:</strong>
-                        <span>${dataModal.name}</span>
+                        <span>{dataModal.name}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <strong>Cantidad de stock:</strong>

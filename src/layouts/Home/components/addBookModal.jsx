@@ -22,6 +22,7 @@ const AddBookModal = ({ isModalOpen, handleToggleModal }) => {
                 setShowAlert(true);
                 setWait(false);
                 form.resetFields();
+                window.location.reload();
                 setTimeout(() => { handleToggleModal('modal-add', false); setShowAlert(false); refreshData();}, 2000);
             } else {
                 setAlert({ type: 'error', message: 'Error al guardar el libro' });

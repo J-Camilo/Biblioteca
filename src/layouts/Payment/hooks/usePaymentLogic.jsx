@@ -65,9 +65,18 @@ const usePaymentLogic = () => {
       alert("No hay datos para generar el comprobante.");
       return;
     }
+    
+    let dataBook = {
+      name: oneBook.name,
+      quantity: oneBook.quantity - bookData.quantity,
+      price: oneBook.price,
+      sypnosis: oneBook.sypnosis,
+      url: oneBook.url,
+      isbn: oneBook.ISBN,
+      state: 1
+    }
 
-    //hace la resta de los que se lleva
-    updateBook(idbook, { quantity:  oneBook.quantity - bookData.quantity });
+    updateBook(idbook, dataBook);
 
     const doc = new jsPDF();
 
