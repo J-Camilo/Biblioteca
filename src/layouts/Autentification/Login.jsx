@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import imgLogo from "../../assets/Screenshot 2025-03-30 144759.png";
 
 import { Button, Card, Form, Input, Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import BlurText from "../../components/TextBlur/textBlur";
-import { useAuth } from "../../context/AuthContext";
 import { useValidations } from "./hooks/useValidatios";
+import { useAuth } from "../../context/AuthContext";
 const { Title } = Typography;
 
 function Sign() {
 
-    const { formData, handleChange, handleAnimationComplete, showSignInButton, showPasswordInput, showForm, errors} = useValidations(); // Usa el hook
-    const { login } = useAuth();
+    const { formData, handleChange, handleAnimationComplete, showSignInButton, showPasswordInput, showForm, errors } = useValidations(); // Usa el hook
+    const { sesion } = useAuth();
     let loading = false;
 
     const handleSubmit = (e) => {
-        login(formData);
+        sesion(formData);
     };
 
     return (
