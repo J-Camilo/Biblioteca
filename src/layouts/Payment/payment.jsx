@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 import StepperPay from "./components/stepperPay";
 const { Title } = Typography;
 
-import imgPay from "../../assets/undraw_add-to-cart_c8f2.svg"
-
 function Payment() {
     const navigate = useNavigate();
 
@@ -40,7 +38,6 @@ function Payment() {
                         >
                             Cancelar la compra
                         </Button>
-                        <p>Usuario</p>
                     </div>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-around", gap: 10,marginTop: 30, height: "60vh" }}>

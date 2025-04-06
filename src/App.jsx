@@ -35,7 +35,7 @@ function App() {
             {/* Rutas protegidas */}
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
-              <Route path="/payment" element={<Payment />} />
+              <Route path="/payment/book/:idbook" element={<Payment />} />
             </Route>
           </Routes>
         </div>
