@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import imgLogo from "../../assets/Screenshot 2025-03-30 144759.png";
 
 import { Button, Card, Form, Input, Typography } from "antd";
@@ -12,10 +12,17 @@ function Sign() {
 
     const { formData, handleChange, handleAnimationComplete, showSignInButton, showPasswordInput, showForm, errors } = useValidations(); // Usa el hook
     const { sesion } = useAuth();
-    let loading = false;
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
-        sesion(formData);
+    const handleSubmit = async (e) => {
+        setLoading(true);
+        try {
+            await sesion(formData); 
+        } catch (error) {
+            console.error("Error durante la sesión:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
