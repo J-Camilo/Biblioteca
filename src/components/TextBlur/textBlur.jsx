@@ -16,8 +16,8 @@ const BlurText = ({
   fontSize,
   textAlign
 }) => {
-  const safeText = text || '';
-  const elements = animateBy === 'words' ? safeText.split(' ') : safeText.split('');
+  if (!text) return null;
+  const elements = animateBy === 'words' ? text.split(' ') : text.split('');
 
   const [inView, setInView] = useState(false);
   const ref = useRef();

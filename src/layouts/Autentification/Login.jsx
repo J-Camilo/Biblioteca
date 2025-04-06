@@ -31,7 +31,7 @@ function Sign() {
         }}>
             {!showForm ?
                 <BlurText
-                    text={"Encruentra todos tus libros de una manera unica" || ''}
+                    text={"Encruentra todos tus libros de una manera unica" || 'Default text'}
                     delay={30}
                     animateBy="letters"
                     fontSize={50}
@@ -77,6 +77,9 @@ function Sign() {
                     </Form>
                 </Card>
             }
+            <div style={{ position: "absolute", bottom: 30 }}>
+                Todos los derechos de creación por Juan Fong y Julian Anturi &copy; 2025
+            </div>
         </div>
     );
 }
