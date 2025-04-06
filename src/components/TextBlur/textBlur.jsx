@@ -5,7 +5,7 @@ const BlurText = ({
   text = '',
   delay = 200,
   className = '',
-  animateBy = 'words', // 'words' or 'letters'
+  animateBy = 'letters', // 'words' or 'letters'
   direction = 'top', // 'top' or 'bottom'
   threshold = 0.1,
   rootMargin = '0px',
@@ -16,7 +16,9 @@ const BlurText = ({
   fontSize,
   textAlign
 }) => {
-  const elements = animateBy === 'words' ? text.split(' ') : text.split('');
+  const safeText = text || '';
+  const elements = animateBy === 'words' ? safeText.split(' ') : safeText.split('');
+
   const [inView, setInView] = useState(false);
   const ref = useRef();
   const animatedCount = useRef(0);
