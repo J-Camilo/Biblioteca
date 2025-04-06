@@ -2,14 +2,16 @@ import { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Alert, Button, Form, Input } from "antd";
 import { saveBook } from "../../../services/books";
+import { useCardsData } from "../hooks/useCardData";
 import ModalCard from "../../../components/modal/modal";
 
 const AddBookModal = ({ isModalOpen, handleToggleModal }) => {
     const [form] = Form.useForm();
-
     const [alert, setAlert] = useState(null);
-    const [showAlert, setShowAlert] = useState(false);
+
     const [wait, setWait] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const { refreshData } = useCardsData();
 
     const handleAddBook = async (values) => {
         try {
@@ -18,10 +20,9 @@ const AddBookModal = ({ isModalOpen, handleToggleModal }) => {
             if (response.success) {
                 setAlert({ type: 'success', message: 'Guardado con éxito' });
                 setShowAlert(true);
-
                 setWait(false);
                 form.resetFields();
-                setTimeout(() => { handleToggleModal('modal-add', false); setShowAlert(false); }, 2000);
+                setTimeout(() => { handleToggleModal('modal-add', false); setShowAlert(false); refreshData();}, 2000);
             } else {
                 setAlert({ type: 'error', message: 'Error al guardar el libro' });
                 setShowAlert(true);

@@ -7,7 +7,6 @@ import { BookOutlined, FilterOutlined, LogoutOutlined, PlusOutlined } from "@ant
 const { Search } = Input;
 const { Title } = Typography;
 
-import { useCardsData } from "./hooks/useCardData";
 import AddBookModal from "./components/addBookModal";
 import imgPay from "../../assets/icons8-loading.gif";
 import { getDecryptedCookie } from "../../utils/cookieManager";
@@ -16,8 +15,6 @@ function Home() {
     const { sesionOut } = useAuth();
     const userData = getDecryptedCookie("auth");
     const [isContentLoaded, setIsContentLoaded] = useState(false);
-
-    const { search, setSearch, handleSearch } = useCardsData();
 
     const [isModalOpen, setIsModalOpen] = useState({});
 

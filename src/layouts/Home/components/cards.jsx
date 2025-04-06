@@ -15,7 +15,7 @@ const styleCardApp = {
     cursor: "pointer",
     borderRadius: 25,
     width: "210px",
-    height: "340px",
+    height: "320px",
     background: "black",
     display: "flex",
     boxShadow: "0px 0px 10px #22557b",
@@ -27,7 +27,7 @@ const styleCardApp = {
 };
 
 function Cards() {
-    const { cardsData, visibleCards } = useCardsData();
+    const { cardsData, refreshData } = useCardsData();
     const [isModalOpen, setIsModalOpen] = useState({});
     const [dataModal, setDataModal] = useState('');
     const navigate = useNavigate();
@@ -57,42 +57,38 @@ function Cards() {
     return (
         <>
             {cardsData.map((card, index) =>
-                visibleCards.includes(index) ? (
-                    <Tooltip title="Toca para ver">
-                        <Card
-                            key={card.id}
-                            style={{ ...styleCardApp, ...styles[card.id] }}
-                            onMouseMove={(e) => handleMouseMoveCardApp(e, card.id)}
-                            onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
-                            onClick={() => handleCardClick(card)}
-                        >
-                            {/* Imagen */}
-                            <img src={imageprueba} alt="Image" style={{ width: "200px", borderRadius: 20 }} />
+                <Tooltip title="Toca para ver" key={index}>
+                    <Card
+                        key={card.id}
+                        style={{ ...styleCardApp, ...styles[card.id] }}
+                        onMouseMove={(e) =>{ handleMouseMoveCardApp(e, card.id); refreshData();}}
+                        onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
+                        onClick={() => handleCardClick(card)}
+                    >
+                        {/* Imagen */}
+                        <img src={imageprueba} alt="Image" style={{ width: "170px", borderRadius: 12,padding:3 }} />
 
-                            {/* Título */}
-                            <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center", overflow: "hidden" }}>
-                                <span className="animated-text">{truncateText(card.name, 20)}</span>
-                            </Title>
+                        {/* Título */}
+                        <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center", overflow: "hidden" }}>
+                            <span className="animated-text">{truncateText(card.name, 20)}</span>
+                        </Title>
 
-                            <div style={{ padding: 15 }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <strong>Precio:</strong>
-                                    <span>${card.price}</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <strong>Stock:</strong>
-                                    <span>{card.quantity}</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <strong>ISBN:</strong>
-                                    <span>{card.ISBN}</span>
-                                </div>
+                        <div style={{ padding: 15 }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <strong>Precio:</strong>
+                                <span>${card.price}</span>
                             </div>
-
-
-                        </Card>
-                    </Tooltip>
-                ) : null
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <strong>Stock:</strong>
+                                <span>{card.quantity}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <strong>ISBN:</strong>
+                                <span>{card.ISBN}</span>
+                            </div>
+                        </div>
+                    </Card>
+                </Tooltip>
             )}
             <ModalCard
                 index={'modal-details'}
@@ -113,12 +109,12 @@ function Cards() {
                         <strong>Precio:</strong>
                         <span>${dataModal.price}</span>
                     </div>
-                  
+
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <strong>ISBN:</strong>
                         <span>{dataModal.ISBN}</span>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: "column"}}>
+                    <div style={{ display: 'flex', flexDirection: "column" }}>
                         <strong>sypnosis:</strong>
                         <span>{dataModal.sypnosis}</span>
                     </div>
@@ -130,7 +126,7 @@ function Cards() {
                     <Button type="primary" icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
                         Comprar
                     </Button>
-                    <Button type="primary" icon={<DeleteOutlined />} onClick={() => { refreshData(); deleteBook(dataModal.id) }}>
+                    <Button type="primary" icon={<DeleteOutlined />} onClick={async () => { await deleteBook(dataModal.id); handleToggleModal("modal-details", false); refreshData(); }}>
                         Eliminar
                     </Button>
                 </div>
