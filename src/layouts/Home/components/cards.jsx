@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useCardsData } from "../hooks/useCardData";
 import { useMouseEffect } from "../hooks/useMouseEffect";
-import { Button, Typography, Card, Tooltip } from "antd";
+import { Button, Typography, Card, Tooltip, Alert } from "antd";
 import { AuditOutlined, DeleteOutlined, PayCircleOutlined } from "@ant-design/icons";
 import imageprueba from "../../../assets/Screenshot 2025-03-30 144759.png"
 import { deleteBook } from "../../../services/books";
@@ -27,7 +27,7 @@ const styleCardApp = {
 };
 
 function Cards() {
-    const { cardsData, refreshData } = useCardsData();
+    const { cardsData, refreshData, lend, alert, showAlert, setShowAlert} = useCardsData();
     const [isModalOpen, setIsModalOpen] = useState({});
     const [dataModal, setDataModal] = useState('');
     const navigate = useNavigate();
@@ -37,12 +37,13 @@ function Cards() {
             ...prev,
             [index]: value,
         }));
+        setShowAlert(false);
     };
 
     const {
+        styles,
         handleMouseMoveCardApp,
         handleMouseLeaveCardApp,
-        styles,
     } = useMouseEffect();
 
     const handleCardClick = (card) => {
@@ -61,7 +62,7 @@ function Cards() {
                     <Card
                         key={card.id}
                         style={{ ...styleCardApp, ...styles[card.id] }}
-                        onMouseMove={(e) =>{ handleMouseMoveCardApp(e, card.id); refreshData();}}
+                        onMouseMove={(e) =>{ handleMouseMoveCardApp(e, card.id)}}
                         onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
                         onClick={() => handleCardClick(card)}
                     >
@@ -70,7 +71,7 @@ function Cards() {
 
                         {/* Título */}
                         <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center", overflow: "hidden" }}>
-                            <span className="animated-text">{truncateText(card.name, 20)}</span>
+                            <span className="animated-text">{truncateText(card.name, 15)}</span>
                         </Title>
 
                         <div style={{ padding: 15 }}>
@@ -103,7 +104,7 @@ function Cards() {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <strong>Cantidad de stock:</strong>
-                        <span>${dataModal.name}</span>
+                        <span>{dataModal.quantity}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <strong>Precio:</strong>
@@ -120,8 +121,8 @@ function Cards() {
                     </div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: "column", marginTop: '10px', gap: 10 }}>
-                    <Button type="primary" icon={<AuditOutlined />} onClick={() => console.log('Rentar')}>
-                        Rentar
+                    <Button type="primary" icon={<AuditOutlined />} onClick={() => {lend(dataModal); }}>
+                        Prestar
                     </Button>
                     <Button type="primary" icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
                         Comprar
@@ -130,6 +131,17 @@ function Cards() {
                         Eliminar
                     </Button>
                 </div>
+                {showAlert && (
+                    <Alert
+                        message={alert.message}
+                        className="fade-in-up"
+                        type={alert.type}
+                        showIcon
+                        closable
+                        onClose={() => setShowAlert(false)} 
+                        style={{ marginTop: '20px' }}
+                    />
+                )}
             </ModalCard>
 
         </>

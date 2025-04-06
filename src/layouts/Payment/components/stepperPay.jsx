@@ -8,7 +8,7 @@ import Stepper, { Step } from "../../../components/Steper/Stepper";
 
 function StepperPay() {
     const navigate = useNavigate();
-    const { handleFormChange, handleBookDataChange, generatePDF } = usePaymentLogic();
+    const { oneBook, handleFormChange, handleBookDataChange, generatePDF } = usePaymentLogic();
 
     return (
         <Stepper
@@ -19,9 +19,9 @@ function StepperPay() {
                 }
             }}
             onFinalStepCompleted={() => {
-                generatePDF(); 
-                navigate("/"); 
-              }}
+                generatePDF();
+                navigate("/");
+            }}
             backButtonText="Anterior paso"
             nextButtonText="Siguiente"
             completeButtonText="Terminar"
@@ -41,7 +41,13 @@ function StepperPay() {
 
             {/* Paso 2: Detalles del libro */}
             <Step>
-                <BookStep onDataChange={handleBookDataChange} />
+                <BookStep
+                    bookData={{
+                        name: oneBook?.name || "N/A",
+                        price: oneBook?.price || 0,
+                        quantity: oneBook?.quantity || 0,
+                    }}
+                    onDataChange={handleBookDataChange} />
             </Step>
 
             {/* Paso 3: Formulario de pago */}

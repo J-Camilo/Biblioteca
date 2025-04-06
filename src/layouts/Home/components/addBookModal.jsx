@@ -7,11 +7,11 @@ import ModalCard from "../../../components/modal/modal";
 
 const AddBookModal = ({ isModalOpen, handleToggleModal }) => {
     const [form] = Form.useForm();
+    const { refreshData } = useCardsData();
     const [alert, setAlert] = useState(null);
 
     const [wait, setWait] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
-    const { refreshData } = useCardsData();
 
     const handleAddBook = async (values) => {
         try {

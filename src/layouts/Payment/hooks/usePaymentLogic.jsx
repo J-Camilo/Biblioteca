@@ -1,27 +1,62 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
+import { getBookById, updateBook } from "../../../services/books";
+import { useParams } from "react-router-dom";
 
 const usePaymentLogic = () => {
   // Estado para los datos del formulario
   const [formData, setFormData] = useState({});
+  const { idbook } = useParams();
+  const [oneBook, setOneBook] = useState(null); // Almacena los datos del libro
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const books = await getBookById(idbook);
+        if (books && books.length > 0) {
+          setOneBook(books[0]); // Asigna el primer libro encontrado
+        }
+      } catch (error) {
+        console.error("Error al obtener el libro:", error);
+      }
+    };
+    fetchData();
+  }, [idbook]);
 
   // Estado para los datos del libro
   const [bookData, setBookData] = useState({
-    bookName: "El Gran Libro",
-    price: 50,
-    quantity: 0,
+    bookName: "",
+    price: 0,
+    quantity: 1,
     total: 0,
   });
 
+  // Actualiza los datos del libro cuando se obtienen
+  useEffect(() => {
+    if (oneBook) {
+      setBookData((prev) => ({
+        ...prev,
+        bookName: oneBook.name || "N/A",
+        price: oneBook.price || 0,
+        total: oneBook.price || 0,
+      }));
+    }
+  }, [oneBook]);
+
   // Maneja cambios en el formulario
   const handleFormChange = (values) => {
-    console.log("Datos actualizados:", values);
-    setFormData(values); // Actualiza los datos automáticamente
+    setFormData(values);
   };
 
-  // Maneja cambios en los datos del libro
+  // Maneja cambios en los datos del libro (cantidad)
   const handleBookDataChange = (data) => {
-    setBookData(data); // Actualiza los datos del libro
+    const { quantity } = data;
+    const newTotal = quantity * bookData.price; // Calcula el nuevo total
+    setBookData((prev) => ({
+      ...prev,
+      quantity: quantity || 1, // Asegura que la cantidad no sea cero
+      total: newTotal,
+    }));
   };
 
   // Función para generar el PDF
@@ -30,6 +65,9 @@ const usePaymentLogic = () => {
       alert("No hay datos para generar el comprobante.");
       return;
     }
+
+    //hace la resta de los que se lleva
+    updateBook(idbook, { quantity:  oneBook.quantity - bookData.quantity });
 
     const doc = new jsPDF();
 
@@ -55,26 +93,27 @@ const usePaymentLogic = () => {
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
     doc.text("Detalles del Libro", 20, 100);
-    doc.line(20, 102, 190, 102); // Línea divisoria
+    doc.line(20, 102, 190, 102);
 
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
     doc.text(`Libro: ${bookData.bookName || "N/A"}`, 20, 110);
-    doc.text(`Cantidad comprada: ${bookData.quantity || "N/A"}`, 20, 120);
-    doc.text(`Precio unitario: $${bookData.price.toFixed(2) || "N/A"}`, 20, 130);
+    doc.text(`ISBN: ${oneBook?.ISBN || "N/A"}`, 20, 120); // Agrega el ISBN
+    doc.text(`Cantidad comprada: ${bookData.quantity || "N/A"}`, 20, 130);
+    doc.text(`Precio unitario: $${bookData.price.toFixed(2) || "N/A"}`, 20, 140);
 
     // Resumen del total
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text("Resumen del Pago", 20, 150);
-    doc.line(20, 152, 190, 152); // Línea divisoria
+    doc.text("Resumen del Pago", 20, 160);
+    doc.line(20, 162, 190, 162);
 
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
-    doc.text(`Subtotal: $${(bookData.quantity * bookData.price).toFixed(2) || "N/A"}`, 20, 160);
-    doc.text(`IVA (1.9%): $${((bookData.total - bookData.quantity * bookData.price) || 0).toFixed(2)}`, 20, 170);
+    doc.text(`Subtotal: $${(bookData.quantity * bookData.price).toFixed(2) || "N/A"}`, 20, 170);
+    doc.text(`IVA (1.9%): $${((bookData.total - bookData.quantity * bookData.price) || 0).toFixed(2)}`, 20, 180);
     doc.setFont("helvetica", "bold");
-    doc.text(`Total: $${bookData.total.toFixed(2) || "N/A"}`, 20, 180);
+    doc.text(`Total: $${bookData.total.toFixed(2) || "N/A"}`, 20, 190);
 
     // Guardar el documento PDF
     doc.save("comprobante_pago.pdf");
@@ -83,6 +122,7 @@ const usePaymentLogic = () => {
   return {
     formData,
     bookData,
+    oneBook, // Retornar los datos del libro
     handleFormChange,
     handleBookDataChange,
     generatePDF,

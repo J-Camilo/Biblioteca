@@ -14,7 +14,7 @@ export const API_ENDPOINTS = {
       DELETE: (id) => `/books/${id}`,
     },
     LENDS: {
-      LEND_BOOK: '/lend/',
+      LEND_BOOK: '/lend',
     },
     LEND_HISTORY: {
       HISTORY: (user_id) => `/lend/history/${user_id}`,
