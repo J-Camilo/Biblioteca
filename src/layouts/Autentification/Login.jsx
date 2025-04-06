@@ -77,6 +77,9 @@ function Sign() {
                     </Form>
                 </Card>
             }
+            <div style={{ position: "absolute", bottom: 30 }}>
+                Todos los derechos de creación por Juan Fong y Julian Anturi &copy; 2025
+            </div>
         </div>
     );
 }
