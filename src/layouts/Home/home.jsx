@@ -1,15 +1,16 @@
+import Cards from "./components/cards";
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
 import { Button, Typography, Input, Card, Alert } from "antd";
 import { BookOutlined, FilterOutlined, LogoutOutlined, PlusOutlined } from "@ant-design/icons";
-import Cards from "./components/cards";
-import { useAuth } from "../../context/AuthContext";
 
 const { Search } = Input;
 const { Title } = Typography;
 
+import { useCardsData } from "./hooks/useCardData";
+import AddBookModal from "./components/addBookModal";
 import imgPay from "../../assets/icons8-loading.gif";
 import { getDecryptedCookie } from "../../utils/cookieManager";
-import { useCardsData } from "./hooks/useCardData";
 
 function Home() {
     const { sesionOut } = useAuth();
@@ -17,6 +18,15 @@ function Home() {
     const [isContentLoaded, setIsContentLoaded] = useState(false);
 
     const { search, setSearch, handleSearch } = useCardsData();
+
+    const [isModalOpen, setIsModalOpen] = useState({});
+
+    const handleToggleModal = (index, value) => {
+        setIsModalOpen(prev => ({
+            ...prev,
+            [index]: value,
+        }));
+    };
 
     // Temporizador para simular la carga
     useEffect(() => {
@@ -57,16 +67,17 @@ function Home() {
                     <div style={{ padding: 20, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 30 }} className="fade-in-up">
                         <Title level={2} style={{ marginBottom: 0, color: "white", borderLeft: "white 2px solid", paddingLeft: 10 }}>Lista de libros <BookOutlined /></Title>
                         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                            <Search
+                            {/* <Search
                                 placeholder="Busca el libro"
                                 enterButton="Buscar"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 onSearch={handleSearch}
-                            />
+                            /> */}
                             <Button
                                 type="primary"
                                 icon={<PlusOutlined />}
+                                onClick={() => handleToggleModal('modal-add', true)}
                             >
                                 Agregar un libro
                             </Button>
@@ -102,6 +113,7 @@ function Home() {
                     </div>
                 </div>
             )}
+            <AddBookModal isModalOpen={isModalOpen} handleToggleModal={handleToggleModal}/>
         </div>
     );
 }

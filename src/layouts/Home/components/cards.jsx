@@ -6,6 +6,7 @@ import { Button, Typography, Card, Tooltip } from "antd";
 import { AuditOutlined, DeleteOutlined, PayCircleOutlined } from "@ant-design/icons";
 import imageprueba from "../../../assets/Screenshot 2025-03-30 144759.png"
 import { deleteBook } from "../../../services/books";
+import ModalCard from "../../../components/modal/modal";
 
 const { Title } = Typography;
 
@@ -26,8 +27,17 @@ const styleCardApp = {
 };
 
 function Cards() {
-    const { cardsData, visibleCards, refreshData } = useCardsData();
+    const { cardsData, visibleCards } = useCardsData();
+    const [isModalOpen, setIsModalOpen] = useState({});
+    const [dataModal, setDataModal] = useState('');
     const navigate = useNavigate();
+
+    const handleToggleModal = (index, value) => {
+        setIsModalOpen(prev => ({
+            ...prev,
+            [index]: value,
+        }));
+    };
 
     const {
         handleMouseMoveCardApp,
@@ -35,13 +45,9 @@ function Cards() {
         styles,
     } = useMouseEffect();
 
-    const handleCardClick = () => {
-        // dispatch(toggleModal({ index: 1, isOpen: true }));
-        // dispatch(setLoading(true));
-
-        // setTimeout(() => {
-        //     dispatch(setLoading(false));
-        // }, 2000);
+    const handleCardClick = (card) => {
+        setDataModal(card);
+        handleToggleModal('modal-details', true);
     };
 
     const truncateText = (text, maxLength) => {
@@ -49,40 +55,88 @@ function Cards() {
     };
 
     return (
-        cardsData.map((card, index) =>
-            visibleCards.includes(index) ? (
-                <Tooltip title="Toca para ver">
-                    <Card
-                        key={card.id}
-                        style={{ ...styleCardApp, ...styles[card.id] }}
-                        onMouseMove={(e) => handleMouseMoveCardApp(e, card.id)}
-                        onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
-                        onClick={() => handleCardClick()}
-                    >
-                        {/* Imagen */}
-                        <img src={imageprueba} alt="Image" style={{ width: "200px", borderRadius: 20 }} />
+        <>
+            {cardsData.map((card, index) =>
+                visibleCards.includes(index) ? (
+                    <Tooltip title="Toca para ver">
+                        <Card
+                            key={card.id}
+                            style={{ ...styleCardApp, ...styles[card.id] }}
+                            onMouseMove={(e) => handleMouseMoveCardApp(e, card.id)}
+                            onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
+                            onClick={() => handleCardClick(card)}
+                        >
+                            {/* Imagen */}
+                            <img src={imageprueba} alt="Image" style={{ width: "200px", borderRadius: 20 }} />
 
-                        {/* Título */}
-                        <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center", overflow: "hidden" }}>
-                            <span className="animated-text">{truncateText(card.name, 20)}</span>
-                        </Title>
+                            {/* Título */}
+                            <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center", overflow: "hidden" }}>
+                                <span className="animated-text">{truncateText(card.name, 20)}</span>
+                            </Title>
 
-                        {/* Botones */}
-                        <div style={{ display: 'flex', flexDirection:"column", marginTop: '10px' }}>
-                            <Button type="primary" icon={<AuditOutlined />} onClick={() => console.log('Rentar')}>
-                                Rentar
-                            </Button>
-                            <Button type="primary" icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${card.id}`)}>
-                                Comprar
-                            </Button>
-                            <Button type="primary" icon={<DeleteOutlined />} onClick={() => {refreshData(); deleteBook(card.id)}}>
-                                Eliminar
-                            </Button>
-                        </div>
-                    </Card>
-                </Tooltip>
-            ) : null
-        )
+                            <div style={{ padding: 15 }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <strong>Precio:</strong>
+                                    <span>${card.price}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <strong>Stock:</strong>
+                                    <span>{card.quantity}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <strong>ISBN:</strong>
+                                    <span>{card.ISBN}</span>
+                                </div>
+                            </div>
+
+
+                        </Card>
+                    </Tooltip>
+                ) : null
+            )}
+            <ModalCard
+                index={'modal-details'}
+                title="Detalles del libro"
+                isModalOpen={isModalOpen}
+                handleToggleModal={handleToggleModal}
+            >
+                <div style={{ padding: 15 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <strong>Nombre:</strong>
+                        <span>${dataModal.name}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <strong>Cantidad de stock:</strong>
+                        <span>${dataModal.name}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <strong>Precio:</strong>
+                        <span>${dataModal.price}</span>
+                    </div>
+                  
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <strong>ISBN:</strong>
+                        <span>{dataModal.ISBN}</span>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: "column"}}>
+                        <strong>sypnosis:</strong>
+                        <span>{dataModal.sypnosis}</span>
+                    </div>
+                </div>
+                <div style={{ display: 'flex', flexDirection: "column", marginTop: '10px', gap: 10 }}>
+                    <Button type="primary" icon={<AuditOutlined />} onClick={() => console.log('Rentar')}>
+                        Rentar
+                    </Button>
+                    <Button type="primary" icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
+                        Comprar
+                    </Button>
+                    <Button type="primary" icon={<DeleteOutlined />} onClick={() => { refreshData(); deleteBook(dataModal.id) }}>
+                        Eliminar
+                    </Button>
+                </div>
+            </ModalCard>
+
+        </>
     );
 }
 

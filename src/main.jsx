@@ -16,7 +16,7 @@ createRoot(document.getElementById('root')).render(
           borderRadius: 12,
 
           // Alias Token
-          colorBgContainer: '#f6ffed',
+          colorBgContainer: '#e9e9e9c7',
         },
       }}
     >
