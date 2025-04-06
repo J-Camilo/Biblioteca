@@ -10,6 +10,7 @@ const { Title } = Typography;
 import AddBookModal from "./components/addBookModal";
 import imgPay from "../../assets/icons8-loading.gif";
 import { getDecryptedCookie } from "../../utils/cookieManager";
+import DetailLends from "./components/detailLends";
 
 function Home() {
     const { sesionOut } = useAuth();
@@ -17,9 +18,10 @@ function Home() {
     const [isContentLoaded, setIsContentLoaded] = useState(false);
 
     const [isModalOpen, setIsModalOpen] = useState({});
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     const handleToggleModal = (index, value) => {
-        setIsModalOpen(prev => ({
+        setIsModalOpen((prev) => ({
             ...prev,
             [index]: value,
         }));
@@ -80,6 +82,7 @@ function Home() {
                             </Button>
                             <Button
                                 type="primary"
+                                onClick={() => setIsDrawerOpen(true)}
                                 icon={<FilterOutlined />}
                             >
                                 Prestamos
@@ -104,13 +107,13 @@ function Home() {
                                 showIcon
                             />
                         </div>
-                        <div style={{ display: "flex", flexWrap: "wrap", width: "80%", overflow: "auto", height: "80vh" }}>
-                            <Cards />
-                        </div>
+                        <Cards />
+
                     </div>
                 </div>
             )}
-            <AddBookModal isModalOpen={isModalOpen} handleToggleModal={handleToggleModal}/>
+            <AddBookModal isModalOpen={isModalOpen} handleToggleModal={handleToggleModal} />
+            <DetailLends isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
         </div>
     );
 }

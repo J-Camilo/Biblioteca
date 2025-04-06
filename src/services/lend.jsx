@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from '../context/apiEndpoints';
-import { postJson } from './apiHelper';
+import { get, postJson } from './apiHelper';
 
 export const lendBook = async (lendData) => {
   return postJson(API_ENDPOINTS.LENDS.LEND_BOOK, lendData);

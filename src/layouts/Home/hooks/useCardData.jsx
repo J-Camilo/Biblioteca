@@ -53,11 +53,12 @@ export const useCardsData = () => {
     try {
       const response = await lendBook(lendData);
 
-      if (!response.success) {
-        throw new Error(response.message || "Error al registrar el préstamo");
-      }
+      // if (!response.success) {
+      //   throw new Error(response.message || "Error al registrar el préstamo");
+      // }
 
       generateLoanPDF(value);
+      window.location.reload();
     } catch (error) {
       setAlert({ type: "error", message: error.response.data.detail || "Error inesperado" });
       setShowAlert(true);
