@@ -8,11 +8,14 @@ const { Search } = Input;
 const { Title } = Typography;
 
 import imgPay from "../../assets/icons8-loading.gif";
+import { getDecryptedCookie } from "../../utils/cookieManager";
 
 function Home() {
     const { sesionOut } = useAuth();
+    const userData = getDecryptedCookie("auth");
     const [isContentLoaded, setIsContentLoaded] = useState(false);
-
+    console.log(userData.user);
+    
     // Temporizador para simular la carga
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -65,7 +68,7 @@ function Home() {
                                 Prestamos
                             </Button>
                             <Search placeholder="Busca el libro" enterButton="Buscar" loading />
-                            <p>Usuario</p>
+                            <p style={{textTransform: "capitalize"}}>{userData.user.name}</p>
                             <Button
                                 type="primary"
                                 icon={<LogoutOutlined />}
