@@ -29,7 +29,7 @@ function Sign() {
             top: 0,
             left: 0
         }}>
-            {!showForm ?
+            {/* {!showForm ?
                 <BlurText
                     text={"Encruentra todos tus libros de una manera unica" || ''}
                     delay={30}
@@ -39,7 +39,7 @@ function Sign() {
                     onAnimationComplete={handleAnimationComplete}
                     className="text-8xl mb-8"
                 />
-                :
+                : */}
                 <Card style={{ width: 400, borderRadius: 20 }} className="fade-in-up">
                     <Form
                         name="login"
@@ -76,7 +76,7 @@ function Sign() {
                         )}
                     </Form>
                 </Card>
-            }
+            {/* }k */}
         </div>
     );
 }
