@@ -11,13 +11,13 @@ export const useMouseEffect = () => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    const shadowX = (x / rect.width) * 20;
-    const shadowY = (y / rect.height) * 20;
+    const shadowX = (x / rect.width) * 2;
+    const shadowY = (y / rect.height) * 2;
 
     setStyles((prev) => ({
       ...prev,
       [id]: {
-        transform: `rotateY(${x / 10}deg) rotateX(${y / 10}deg) scale(1.1)`,
+        transform: `rotateY(${x / 10}deg) rotateX(${y / 10}deg) scale(1.05)`,
         boxShadow: `${shadowX}px ${shadowY}px 30px #22557b`,
         transition: "transform 0.1s, box-shadow 0.1s",
       },
