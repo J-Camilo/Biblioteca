@@ -29,7 +29,7 @@ function Payment() {
                 width: "100%",
             }} className="fade-in-up">
                 <div style={{ padding: 20, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 30 }} className="fade-in-up">
-                    <Title level={2} style={{ marginBottom: 0, color: "white", borderLeft: "white 2px solid", paddingLeft: 10 }}>Compra de libro [a12] <BookOutlined /></Title>
+                    <Title level={2} style={{ marginBottom: 0, color: "white", borderLeft: "white 2px solid", paddingLeft: 10 }}>Compra de libro <BookOutlined /></Title>
                     <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
                         <Button
                             type="primary"
