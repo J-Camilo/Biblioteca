@@ -15,7 +15,7 @@ const styleCardApp = {
     cursor: "pointer",
     borderRadius: 25,
     width: "210px",
-    height: "320px",
+    height: "400px",
     background: "black",
     display: "flex",
     boxShadow: "0px 0px 10px #22557b",
@@ -27,7 +27,7 @@ const styleCardApp = {
 };
 
 function Cards() {
-    const { cardsData, refreshData, lend, alert, showAlert, setShowAlert} = useCardsData();
+    const { cardsData, refreshData, lend, alert, showAlert, setShowAlert } = useCardsData();
     const [isModalOpen, setIsModalOpen] = useState({});
     const [dataModal, setDataModal] = useState('');
     const navigate = useNavigate();
@@ -57,40 +57,49 @@ function Cards() {
 
     return (
         <>
-            {cardsData.map((card, index) =>
-                <Tooltip title="Toca para ver" key={index}>
-                    <Card
-                        key={card.id}
-                        style={{ ...styleCardApp, ...styles[card.id] }}
-                        onMouseMove={(e) =>{ handleMouseMoveCardApp(e, card.id)}}
-                        onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
-                        onClick={() => handleCardClick(card)}
-                    >
-                        {/* Imagen */}
-                        <img src={imageprueba} alt="Image" style={{ width: "170px", borderRadius: 12,padding:3 }} />
+            <div style={{ display: 'flex', gap: '10px', width: '100%', height: '80vh', flexWrap: 'wrap', overflowX: 'auto' }}>
+                {cardsData.map((card, index) =>
+                    <Tooltip title="Toca para ver" key={index}>
+                        <Card
+                            key={card.id}
+                            style={{ ...styleCardApp, ...styles[card.id] }}
+                            onMouseMove={(e) => { handleMouseMoveCardApp(e, card.id) }}
+                            onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
+                            onClick={() => handleCardClick(card)}
+                        >
+                            {/* Imagen */}
+                            <img
+                                src={card.url ? card.url : imageprueba}
+                                alt="Image"
+                                style={{
+                                    width: "170px",
+                                    borderRadius: 12,
+                                }}
+                            />
 
-                        {/* Título */}
-                        <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center", overflow: "hidden" }}>
-                            <span className="animated-text">{truncateText(card.name, 15)}</span>
-                        </Title>
+                            {/* Título */}
+                            <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center", overflow: "hidden" }}>
+                                <span className="animated-text">{truncateText(card.name, 15)}</span>
+                            </Title>
 
-                        <div style={{ padding: 15 }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <strong>Precio:</strong>
-                                <span>${card.price}</span>
+                            <div style={{ padding: 15 }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <strong>Precio:</strong>
+                                    <span>${card.price}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <strong>Stock:</strong>
+                                    <span>{card.quantity}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <strong>ISBN:</strong>
+                                    <span>{card.ISBN}</span>
+                                </div>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <strong>Stock:</strong>
-                                <span>{card.quantity}</span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <strong>ISBN:</strong>
-                                <span>{card.ISBN}</span>
-                            </div>
-                        </div>
-                    </Card>
-                </Tooltip>
-            )}
+                        </Card>
+                    </Tooltip>
+                )}
+            </div>
             <ModalCard
                 index={'modal-details'}
                 title="Detalles del libro"
@@ -121,7 +130,7 @@ function Cards() {
                     </div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: "column", marginTop: '10px', gap: 10 }}>
-                    <Button type="primary" icon={<AuditOutlined />} onClick={() => {lend(dataModal); }}>
+                    <Button type="primary" icon={<AuditOutlined />} onClick={() => { lend(dataModal); }}>
                         Prestar
                     </Button>
                     <Button type="primary" icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
@@ -138,7 +147,7 @@ function Cards() {
                         type={alert.type}
                         showIcon
                         closable
-                        onClose={() => setShowAlert(false)} 
+                        onClose={() => setShowAlert(false)}
                         style={{ marginTop: '20px' }}
                     />
                 )}
