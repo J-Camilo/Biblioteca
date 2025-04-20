@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useCardsData } from "../hooks/useCardData";
 import { useMouseEffect } from "../hooks/useMouseEffect";
-import { Button, Typography, Card, Tooltip, Alert } from "antd";
-import { AuditOutlined, DeleteOutlined, PayCircleOutlined } from "@ant-design/icons";
+import { Button, Typography, Card, Tooltip, Alert, Popconfirm } from "antd";
+import { AuditOutlined, DeleteOutlined, EditOutlined, PayCircleOutlined } from "@ant-design/icons";
 import imageprueba from "../../../assets/Screenshot 2025-03-30 144759.png"
 import { deleteBook } from "../../../services/books";
 import ModalCard from "../../../components/modal/modal";
-
+import EditBookModal from "./editBookModal";
 const { Title } = Typography;
 
 const styleCardApp = {
@@ -30,6 +30,7 @@ function Cards() {
     const { cardsData, loading, refreshData, lend, alert, showAlert, setShowAlert } = useCardsData();
     const [isModalOpen, setIsModalOpen] = useState({});
     const [dataModal, setDataModal] = useState('');
+    const [seeEdit, setSeeEdit] = useState(false);
     const navigate = useNavigate();
 
     const handleToggleModal = (index, value) => {
@@ -91,10 +92,6 @@ function Cards() {
                                     <strong>Stock:</strong>
                                     <span>{card.quantity}</span>
                                 </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <strong>ISBN:</strong>
-                                    <span>{card.ISBN}</span>
-                                </div>
                             </div>
                         </Card>
                     </Tooltip>
@@ -106,46 +103,61 @@ function Cards() {
                 isModalOpen={isModalOpen}
                 handleToggleModal={handleToggleModal}
             >
-                <div style={{ padding: 15 }}>
-                    <div style={{ display: 'flex', gap: 10, width: '100%', marginBottom: 10 }}>
-                        <img src={dataModal.url} alt="imgLibrary" style={{ width: '30%', borderRadius: '10px' }} />
-                        <div style={{ width: '100%' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <strong>Nombre:</strong>
-                                <span>{dataModal.name}</span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <strong>Cantidad de stock:</strong>
-                                <span>{dataModal.quantity}</span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <strong>Precio:</strong>
-                                <span>${dataModal.price}</span>
-                            </div>
+                {!seeEdit ?
+                    <>
+                        <div style={{ padding: 15 }}>
+                            <div style={{ display: 'flex', gap: 10, width: '100%', marginBottom: 10 }}>
+                                <img src={dataModal.url} alt="imgLibrary" style={{ width: '30%', borderRadius: '10px' }} />
+                                <div style={{ width: '100%' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <strong>Nombre:</strong>
+                                        <span>{dataModal.name}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <strong>Cantidad de stock:</strong>
+                                        <span>{dataModal.quantity}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <strong>Precio:</strong>
+                                        <span>${dataModal.price}</span>
+                                    </div>
 
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <strong>ISBN:</strong>
-                                <span>{dataModal.ISBN}</span>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <strong>ISBN:</strong>
+                                        <span>{dataModal.ISBN}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: "column" }}>
+                                <strong>Sypnosis:</strong>
+                                <span>{dataModal.sypnosis}</span>
                             </div>
                         </div>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: "column" }}>
-                        <strong>Sypnosis:</strong>
-                        <span>{dataModal.sypnosis}</span>
-                    </div>
-                </div>
-                <div style={{ display: 'flex', flexDirection: "row", marginTop: '10px', gap: 10 }}>
-
-                    <Button type="primary" danger icon={<DeleteOutlined />} onClick={async () => { await deleteBook(dataModal.id); handleToggleModal("modal-details", false); refreshData(); }}>
-                        Eliminar
-                    </Button>
-                    <Button loading={loading} type="dashed" icon={<AuditOutlined />} onClick={() => { lend(dataModal); }}>
-                        Prestar
-                    </Button>
-                    <Button type="primary" block icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
-                        Comprar
-                    </Button>
-                </div>
+                        <div style={{ display: 'flex', flexDirection: "row", marginTop: '10px', gap: 10 }}>
+                            <Button color="blue" variant="filled" block icon={<EditOutlined />} onClick={() => setSeeEdit(true)}>
+                                Editar
+                            </Button>
+                            <Popconfirm title="¿Estás seguro de eliminar?" onConfirm={async () => { await deleteBook(dataModal.id); handleToggleModal("modal-details", false); refreshData(); }}>
+                                <Button type="primary" block danger icon={<DeleteOutlined />} >
+                                    Eliminar
+                                </Button>
+                            </Popconfirm>
+                            <Button loading={loading} block type="dashed" icon={<AuditOutlined />} onClick={() => { lend(dataModal); }}>
+                                Prestar
+                            </Button>
+                            <Button type="primary" block icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
+                                Comprar
+                            </Button>
+                        </div>
+                    </>
+                    :
+                    <>
+                        <EditBookModal handleToggleModal={handleToggleModal} dataModal={dataModal} />
+                        <Button type="primary" block danger icon={<EditOutlined />} onClick={() => setSeeEdit(false)}>
+                            Cancelar
+                        </Button>
+                    </>
+                }
                 {showAlert && (
                     <Alert
                         message={alert.message}
@@ -158,7 +170,6 @@ function Cards() {
                     />
                 )}
             </ModalCard>
-
         </>
     );
 }
