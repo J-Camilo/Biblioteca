@@ -27,7 +27,7 @@ const styleCardApp = {
 };
 
 function Cards() {
-    const { cardsData, refreshData, lend, alert, showAlert, setShowAlert } = useCardsData();
+    const { cardsData, loading, refreshData, lend, alert, showAlert, setShowAlert } = useCardsData();
     const [isModalOpen, setIsModalOpen] = useState({});
     const [dataModal, setDataModal] = useState('');
     const navigate = useNavigate();
@@ -107,37 +107,43 @@ function Cards() {
                 handleToggleModal={handleToggleModal}
             >
                 <div style={{ padding: 15 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <strong>Nombre:</strong>
-                        <span>{dataModal.name}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <strong>Cantidad de stock:</strong>
-                        <span>{dataModal.quantity}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <strong>Precio:</strong>
-                        <span>${dataModal.price}</span>
-                    </div>
+                    <div style={{ display: 'flex', gap: 10, width: '100%', marginBottom: 10 }}>
+                        <img src={dataModal.url} alt="imgLibrary" style={{ width: '30%', borderRadius: '10px' }} />
+                        <div style={{ width: '100%' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <strong>Nombre:</strong>
+                                <span>{dataModal.name}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <strong>Cantidad de stock:</strong>
+                                <span>{dataModal.quantity}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <strong>Precio:</strong>
+                                <span>${dataModal.price}</span>
+                            </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <strong>ISBN:</strong>
-                        <span>{dataModal.ISBN}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <strong>ISBN:</strong>
+                                <span>{dataModal.ISBN}</span>
+                            </div>
+                        </div>
                     </div>
                     <div style={{ display: 'flex', flexDirection: "column" }}>
-                        <strong>sypnosis:</strong>
+                        <strong>Sypnosis:</strong>
                         <span>{dataModal.sypnosis}</span>
                     </div>
                 </div>
-                <div style={{ display: 'flex', flexDirection: "column", marginTop: '10px', gap: 10 }}>
-                    <Button type="primary" icon={<AuditOutlined />} onClick={() => { lend(dataModal); }}>
+                <div style={{ display: 'flex', flexDirection: "row", marginTop: '10px', gap: 10 }}>
+
+                    <Button type="primary" danger icon={<DeleteOutlined />} onClick={async () => { await deleteBook(dataModal.id); handleToggleModal("modal-details", false); refreshData(); }}>
+                        Eliminar
+                    </Button>
+                    <Button loading={loading} type="dashed" icon={<AuditOutlined />} onClick={() => { lend(dataModal); }}>
                         Prestar
                     </Button>
-                    <Button type="primary" icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
+                    <Button type="primary" block icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
                         Comprar
-                    </Button>
-                    <Button type="primary" icon={<DeleteOutlined />} onClick={async () => { await deleteBook(dataModal.id); handleToggleModal("modal-details", false); refreshData(); }}>
-                        Eliminar
                     </Button>
                 </div>
                 {showAlert && (

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from './context/AuthContext';
 
 import Home from './layouts/Home/home';
+import People from './layouts/People/People';
 import ProtectedRoute from './ProtectedRoute';
 import Payment from './layouts/Payment/payment';
 import Sign from './layouts/Autentification/Login';
@@ -16,7 +17,7 @@ function App() {
       <div style={{ width: '100%', height: '99vh', position: 'absolute' }}>
         <Particles
           particleColors={['#ffffff', '#ffffff']}
-          particleCount={500}
+          particleCount={100}
           particleSpread={6}
           speed={0.1}
           particleBaseSize={210}
@@ -35,6 +36,8 @@ function App() {
             {/* Rutas protegidas */}
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
+              <Route path="/people" element={<People />} />
+              {/* <Route path="/lends" element={<Payment />} /> */}
               <Route path="/payment/book/:idbook" element={<Payment />} />
             </Route>
           </Routes>

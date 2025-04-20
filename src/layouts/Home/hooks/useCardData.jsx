@@ -8,8 +8,9 @@ export const useCardsData = () => {
   const [search, setSearch] = useState('');
   const [alert, setAlert] = useState(null);
   const [refresh, setRefresh] = useState(0);
-  // const userData = getDecryptedCookie("auth");
   const [cardsData, setCardsData] = useState([]);
+  // const userData = getDecryptedCookie("auth");
+  const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
   const refreshData = () => {
@@ -50,14 +51,18 @@ export const useCardsData = () => {
       date_lend: formattedLoanDate,
       date_deliver: formattedReturnDate
     }
+    setLoading(true);
     try {
       await lendBook(lendData);
-
       generateLoanPDF(value);
+      setLoading(false);
+
       window.location.reload();
     } catch (error) {
       setAlert({ type: "error", message: error.response.data.detail || "Error inesperado" });
       setShowAlert(true);
+      setLoading(false);
+
     }
   };
 
@@ -107,5 +112,5 @@ export const useCardsData = () => {
     doc.save("comprobante_prestamo.pdf");
   };
 
-  return { cardsData, search, setSearch, handleSearch, refreshData, lend, alert, showAlert, setShowAlert };
+  return { cardsData, loading, search, setSearch, handleSearch, refreshData, lend, alert, showAlert, setShowAlert };
 };
