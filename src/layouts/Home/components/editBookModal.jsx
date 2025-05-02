@@ -1,5 +1,5 @@
-import {  useState } from "react";
-import { EditOutlined  } from "@ant-design/icons";
+import { useState } from "react";
+import { EditOutlined } from "@ant-design/icons";
 import { Alert, Button, Form, Input } from "antd";
 import { updateBook } from "../../../services/books";
 import { useCardsData } from "../hooks/useCardData";
@@ -15,17 +15,14 @@ const EditBookModal = ({ handleToggleModal, dataModal }) => {
     const handleEditBook = async (values) => {
         try {
             setWait(true);
-            const response = await updateBook(dataModal.id, values);
-            if (response.success) {
-                setAlert({ type: 'success', message: 'Editado con éxito' });
-                setShowAlert(true);
-                setWait(false);
-                form.resetFields();
-                setTimeout(() => { handleToggleModal('modal-details', false); setShowAlert(false); refreshData(); window.location.reload(); }, 2000);
-            } else {
-                setAlert({ type: 'error', message: 'Error al editar el libro' });
-                setShowAlert(true);
-            }
+            await updateBook(dataModal.id, values);
+
+            setAlert({ type: 'success', message: 'Editado con éxito' });
+            setShowAlert(true);
+            setWait(false);
+            form.resetFields();
+            setTimeout(() => { handleToggleModal('modal-details', false); setShowAlert(false); refreshData(); window.location.reload(); }, 2000);
+
         } catch (error) {
             setAlert({ type: 'error', message: 'Error inesperado al editar el libro' });
             setShowAlert(true);

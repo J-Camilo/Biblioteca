@@ -3,35 +3,50 @@ import { useEffect, useState } from "react";
 import { getAllBooks } from "../../../services/books";
 import { lendBook } from "../../../services/lend";
 import { message } from "antd";
+import { getAllUsers } from "../../../services/users";
 
 export const useCardsData = () => {
   const [search, setSearch] = useState('');
-  const [alert, setAlert] = useState(null);
   const [refresh, setRefresh] = useState(0);
+
+  const [alert, setAlert] = useState(null);
   const [cardsData, setCardsData] = useState([]);
-  // const userData = getDecryptedCookie("auth");
+  const [cardsDataUser, setCardsDataUser] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+
   const [messageApi, contextHolder] = message.useMessage();
 
   const refreshData = () => {
     setRefresh(prev => prev + 1);
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const key = 'fetchBooks'; // Clave única para identificar el mensaje
-      messageApi.loading({ content: 'Cargando libros...', key, duration: 0 }); // Muestra el mensaje de carga
+  const fetchData = async () => {
+    const key = 'fetchBooks'; // Clave única para identificar el mensaje
+    messageApi.loading({ content: 'Cargando libros...', key, duration: 0 }); // Muestra el mensaje de carga
+    
+    try {
+      const books = await getAllBooks(); // Llama a la API para obtener los libros
+      setCardsData(books); // Actualiza el estado con los datos obtenidos
+      messageApi.success({ content: 'Libros cargados correctamente.', key, duration: 2 }); // Muestra mensaje de éxito
+    } catch (error) {
+      console.error('Error al cargar los libros:', error);
+      messageApi.error({ content: 'Error al cargar los libros.', key, duration: 2 }); // Muestra mensaje de error
+    }
+  };
 
-      try {
-        const books = await getAllBooks(); // Llama a la API para obtener los libros
-        setCardsData(books); // Actualiza el estado con los datos obtenidos
-        messageApi.success({ content: 'Libros cargados correctamente.', key, duration: 2 }); // Muestra mensaje de éxito
-      } catch (error) {
-        console.error('Error al cargar los libros:', error);
-        messageApi.error({ content: 'Error al cargar los libros.', key, duration: 2 }); // Muestra mensaje de error
-      }
-    };
+  const fetchDataUsers = async () => {
+    try {
+      const users = await getAllUsers(); // Llama a la API para obtener los libros
+      setCardsDataUser(users.data); // Actualiza el estado con los datos obtenidos
+    } catch (error) {
+      console.error('Error al cargar los libros:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDataUsers();
     fetchData();
   }, [refresh]);
 
@@ -54,9 +69,20 @@ export const useCardsData = () => {
   const formattedLoanDate = formatDate(loanDate);
   const formattedReturnDate = formatDate(returnDate);
 
-  const lend = async (value) => {
+  const lend = async (value, selectedUser) => {
+    if (
+      (selectedUser === null || selectedUser === undefined)
+    ) {
+      messageApi.info({
+        content: "Escoge el usuario para prestarle el libro y si no lo encuentras, dale al botón registrar.",
+        key: 1,
+        duration: 6
+      });
+      return
+    }
+
     const lendData = {
-      user_id: 1,
+      user_id: selectedUser,
       book_id: value.id,
       date_lend: formattedLoanDate,
       date_deliver: formattedReturnDate
@@ -69,10 +95,8 @@ export const useCardsData = () => {
 
       window.location.reload();
     } catch (error) {
-      setAlert({ type: "error", message: error.response.data.detail || "Error inesperado" });
-      setShowAlert(true);
+      messageApi.error({ content: error.response.data.message || "No se pudo procesar el prestamo intenta luego", key: value, duration: 5 });
       setLoading(false);
-
     }
   };
 
@@ -122,5 +146,5 @@ export const useCardsData = () => {
     doc.save("comprobante_prestamo.pdf");
   };
 
-  return { contextHolder, cardsData, loading, search, setSearch, handleSearch, refreshData, lend, alert, showAlert, setShowAlert };
+  return { cardsDataUser, contextHolder, cardsData, loading, search, setSearch, handleSearch, refreshData, lend, alert, showAlert, setShowAlert };
 };

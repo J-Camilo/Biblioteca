@@ -12,7 +12,7 @@ const useEditableTable = () => {
     // Función para obtener todos los usuarios
     const fetchUsers = async () => {
         const key = 'fetchUsers'; // Clave única para identificar el mensaje
-        messageApi.loading({ content: 'Cargando usuarios...', key });
+        messageApi.loading({ content: 'Cargando usuarios...', key, duration: 0 });
         try {
             const response = await getAllUsers();
             if (response && response.data) {
