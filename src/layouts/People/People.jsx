@@ -5,37 +5,23 @@ import EditableCell from '../../components/EditTablet/EditableCell';
 import useEditableTable from './hooks/useEditableTable';
 import { PlusOutlined } from '@ant-design/icons';
 import ModalCard from '../../components/modal/modal';
+import AddUserForm from './components/addUserForm';
 
 const People = () => {
-  const {
-    form,
-    data,
-    editingKey,
-    isEditing,
-    edit,
-    cancel,
-    save,
-    mergedColumns,
-  } = useEditableTable();
+  const { refreshData, messageApi, contextHolder, form, data, mergedColumns, edit, save, cancel } = useEditableTable();
 
   const [isModalOpen, setIsModalOpen] = useState({});
-
 
   const handleToggleModal = (index, value) => {
     setIsModalOpen(prev => ({
       ...prev,
       [index]: value,
     }));
-    setShowAlert(false);
-  };
-
-  const handleCardClick = (card) => {
-    setDataModal(card);
-    handleToggleModal('modal-details', true);
   };
 
   return (
     <>
+      {contextHolder}
       <div
         style={{
           display: 'flex',
@@ -63,7 +49,7 @@ const People = () => {
             <Button
               type="dashed"
               icon={<PlusOutlined />}
-            onClick={() => handleToggleModal('modal-add', true)}
+              onClick={() => handleToggleModal('modal-add', true)}
             >
               Agregar un usuario
             </Button>
@@ -71,16 +57,16 @@ const People = () => {
           <Form form={form} component={false}>
             <Table
               components={{
-                body: { cell: EditableCell },
+                body: {
+                  cell: EditableCell, // Usa el componente personalizado
+                },
               }}
-              scroll={{ y: 55 * 8 }}
               bordered
               dataSource={data}
               columns={mergedColumns}
               rowClassName="editable-row"
-              pagination={{
-                onChange: cancel,
-              }}
+              pagination={false}
+              scroll={{ y: 55 * 9 }}
             />
           </Form>
         </div>
@@ -91,7 +77,7 @@ const People = () => {
         isModalOpen={isModalOpen}
         handleToggleModal={handleToggleModal}
       >
-
+        < AddUserForm refreshData={refreshData} messageApi={messageApi}  handleToggleModal={handleToggleModal}/>
       </ModalCard>
     </>
   );

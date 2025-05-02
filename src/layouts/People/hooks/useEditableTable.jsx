@@ -1,23 +1,44 @@
-import { useState } from 'react';
-import { Form, Typography, Popconfirm } from 'antd'; // Importa Form aquí
-
-const originData = Array.from({ length: 5 }).map((_, i) => ({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-}));
+import { useEffect, useState } from 'react';
+import { Form, Typography, Popconfirm, message } from 'antd'; // Importa Form aquí
+import { deleteUser, getAllUsers, updateUser } from '../../../services/users';
 
 const useEditableTable = () => {
-    const [form] = Form.useForm(); // Ahora Form está definido
-    const [data, setData] = useState(originData);
+    const [form] = Form.useForm();
+    const [data, setData] = useState([]);
+    const [refresh, setRefresh] = useState(0);
     const [editingKey, setEditingKey] = useState('');
+    const [messageApi, contextHolder] = message.useMessage();
 
-    const isEditing = (record) => record.key === editingKey;
+    // Función para obtener todos los usuarios
+    const fetchUsers = async () => {
+        const key = 'fetchUsers'; // Clave única para identificar el mensaje
+        messageApi.loading({ content: 'Cargando usuarios...', key });
+        try {
+            const response = await getAllUsers();
+            if (response && response.data) {
+                const reversedData = [...response.data].reverse();
+                setData(reversedData);
+            }
+            messageApi.success({ content: 'Usuarios cargados correctamente.', key, duration: 2 });
+        } catch (error) {
+            console.error('Error al obtener los usuarios:', error);
+            messageApi.error({ content: 'Error al cargar los usuarios.', key, duration: 2 });
+        }
+    };
+
+    const refreshData = () => {
+        setRefresh(prev => prev + 1);
+    }
+
+    useEffect(() => {
+        fetchUsers(); // Cargar datos al montar el componente
+    }, [refresh]);
+
+    const isEditing = (record) => record.id === editingKey;
 
     const edit = (record) => {
-        form.setFieldsValue({ name: '', age: '', address: '', ...record });
-        setEditingKey(record.key);
+        form.setFieldsValue({ ...record });
+        setEditingKey(record.id);
     };
 
     const cancel = () => {
@@ -28,20 +49,37 @@ const useEditableTable = () => {
         try {
             const row = await form.validateFields();
             const newData = [...data];
-            const index = newData.findIndex((item) => key === item.key);
+            const index = newData.findIndex((item) => key === item.id);
 
             if (index > -1) {
+                messageApi.loading({ content: 'Procesando...', key });
                 const item = newData[index];
-                newData.splice(index, 1, { ...item, ...row });
+                const updatedData = { ...item, ...row };
+                delete updatedData.key;
+
+                await updateUser(key, updatedData);
+                newData.splice(index, 1, updatedData);
                 setData(newData);
                 setEditingKey('');
-            } else {
-                newData.push(row);
-                setData(newData);
-                setEditingKey('');
+                messageApi.success({ content: 'Listo! 😃', key });
             }
         } catch (errInfo) {
-            console.log('Validate Failed:', errInfo);
+            messageApi.error({ content: 'Error al editar este usuario 😓', key });
+            console.log('Validación fallida:', errInfo);
+        }
+    };
+
+    const remove = async (key) => {
+        try {
+            messageApi.loading({ content: 'Procesando...', key });
+            await deleteUser(key);
+            const newData = data.filter((item) => item.id !== key);
+            setData(newData);
+            messageApi.success({ content: 'Listo! 😃', key });
+
+        } catch (error) {
+            messageApi.error({ content: "No pudimos eliminar este usuario, tiene un prestamo pendiente. Devuelve el prestamo y vuelve a intentarlo", key });
+            console.error('Error al eliminar el usuario:', error);
         }
     };
 
@@ -53,7 +91,7 @@ const useEditableTable = () => {
         },
         {
             title: 'Correo',
-            dataIndex: 'age',
+            dataIndex: 'email',
             editable: true,
         },
         {
@@ -67,14 +105,18 @@ const useEditableTable = () => {
             editable: true,
         },
         {
+            title: 'Telefono',
+            dataIndex: 'phone',
+            editable: false,
+        },
+        {
             title: 'Acción',
-            dataIndex: 'operation',
             width: '12%',
             render: (_, record) => {
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
-                        <Typography.Link onClick={() => save(record.key)} style={{ marginRight: 8 }}>
+                        <Typography.Link onClick={() => save(record.id)} style={{ marginRight: 8 }}>
                             Guardar
                         </Typography.Link>
                         <Popconfirm title="¿Estás seguro de cancelar?" onConfirm={cancel}>
@@ -93,7 +135,7 @@ const useEditableTable = () => {
             width: '8%',
             dataIndex: 'operation',
             render: (_, record) => (
-                <Popconfirm title="¿Estás seguro de eliminar este usuario?" onConfirm={() => { }}>
+                <Popconfirm title="¿Estás seguro de eliminar este usuario?" onConfirm={() => remove(record.id)}>
                     <a>Eliminar</a>
                 </Popconfirm>
             ),
@@ -108,7 +150,7 @@ const useEditableTable = () => {
             ...col,
             onCell: (record) => ({
                 record,
-                inputType: col.dataIndex === 'age' ? 'number' : 'text',
+                inputType: col.dataIndex === 'lended' ? 'number' : 'text',
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: isEditing(record),
@@ -117,6 +159,9 @@ const useEditableTable = () => {
     });
 
     return {
+        refreshData,
+        messageApi,
+        contextHolder,
         form,
         data,
         editingKey,
@@ -127,5 +172,6 @@ const useEditableTable = () => {
         mergedColumns,
     };
 };
+
 
 export default useEditableTable;

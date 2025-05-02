@@ -27,7 +27,7 @@ const styleCardApp = {
 };
 
 function Cards() {
-    const { cardsData, loading, refreshData, lend, alert, showAlert, setShowAlert } = useCardsData();
+    const { contextHolder, cardsData, loading, refreshData, lend, alert, showAlert, setShowAlert } = useCardsData();
     const [isModalOpen, setIsModalOpen] = useState({});
     const [dataModal, setDataModal] = useState('');
     const [seeEdit, setSeeEdit] = useState(false);
@@ -58,6 +58,7 @@ function Cards() {
 
     return (
         <>
+            {contextHolder}
             <div style={{ display: 'flex', gap: '10px', width: '100%', height: '80vh', flexWrap: 'wrap', overflowX: 'auto' }}>
                 {cardsData.data?.map((card, index) =>
                     <Tooltip title="Toca para ver" key={index}>
@@ -132,8 +133,8 @@ function Cards() {
                                 <span>{dataModal.sypnosis}</span>
                             </div>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: "row",  marginTop: '10px', gap: 10 }}>
-                            <Button color="blue"  type="dashed" block icon={<EditOutlined />} onClick={() => setSeeEdit(true)}>
+                        <div style={{ display: 'flex', flexDirection: "row", marginTop: '10px', gap: 10 }}>
+                            <Button color="blue" type="dashed" block icon={<EditOutlined />} onClick={() => setSeeEdit(true)}>
                                 Editar
                             </Button>
                             <Popconfirm title="¿Estás seguro de eliminar?" onConfirm={async () => { await deleteBook(dataModal.id); handleToggleModal("modal-details", false); refreshData(); }}>
@@ -141,7 +142,7 @@ function Cards() {
                                     Eliminar
                                 </Button>
                             </Popconfirm>
-                            <Button loading={loading} block  disabled={!dataModal.quantity || dataModal.quantity <= 0}  type="dashed" icon={<AuditOutlined />} onClick={() => { lend(dataModal); }}>
+                            <Button loading={loading} block disabled={!dataModal.quantity || dataModal.quantity <= 0} type="dashed" icon={<AuditOutlined />} onClick={() => { lend(dataModal); }}>
                                 Prestar
                             </Button>
                             <Button type="primary" block disabled={!dataModal.quantity || dataModal.quantity <= 0} icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
@@ -152,7 +153,7 @@ function Cards() {
                     :
                     <div className="fade-in-up">
                         <EditBookModal handleToggleModal={handleToggleModal} dataModal={dataModal} />
-                        <Button type="primary" block danger  onClick={() => setSeeEdit(false)}>
+                        <Button type="primary" block danger onClick={() => setSeeEdit(false)}>
                             Cancelar
                         </Button>
                     </div>

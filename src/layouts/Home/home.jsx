@@ -1,24 +1,19 @@
 import Cards from "./components/cards";
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../../context/AuthContext";
-import { Button, Typography, Input, Card, Alert } from "antd";
-import { BookOutlined, FilterOutlined, LogoutOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Typography, Input, Alert } from "antd";
+import {  PlusOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 const { Title } = Typography;
 
 import AddBookModal from "./components/addBookModal";
 import imgPay from "../../assets/icons8-loading.gif";
-import { getDecryptedCookie } from "../../utils/cookieManager";
-import DetailLends from "./components/detailLends";
 import Nav from "../../components/Nav/Nav";
 
 function Home() {
-    const userData = getDecryptedCookie("auth");
     const [isContentLoaded, setIsContentLoaded] = useState(false);
 
     const [isModalOpen, setIsModalOpen] = useState({});
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     const handleToggleModal = (index, value) => {
         setIsModalOpen((prev) => ({
@@ -80,13 +75,6 @@ function Home() {
                         >
                             Agregar un libro
                         </Button>
-                        <Button
-                            type="primary"
-                            onClick={() => setIsDrawerOpen(true)}
-                            icon={<FilterOutlined />}
-                        >
-                            Tus Prestamos
-                        </Button>
                     </Nav>
 
                     <div style={{ display: "flex", gap: 10, height: "60vh" }}>
@@ -104,7 +92,6 @@ function Home() {
                 </div>
             )}
             <AddBookModal isModalOpen={isModalOpen} handleToggleModal={handleToggleModal} />
-            {/* <DetailLends isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} /> */}
         </div>
     );
 }

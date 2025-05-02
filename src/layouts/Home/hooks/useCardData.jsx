@@ -2,7 +2,7 @@ import { jsPDF } from "jspdf";
 import { useEffect, useState } from "react";
 import { getAllBooks } from "../../../services/books";
 import { lendBook } from "../../../services/lend";
-import { getDecryptedCookie } from "../../../utils/cookieManager";
+import { message } from "antd";
 
 export const useCardsData = () => {
   const [search, setSearch] = useState('');
@@ -12,6 +12,7 @@ export const useCardsData = () => {
   // const userData = getDecryptedCookie("auth");
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const refreshData = () => {
     setRefresh(prev => prev + 1);
@@ -19,8 +20,17 @@ export const useCardsData = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const books = await getAllBooks();
-      setCardsData(books);
+      const key = 'fetchBooks'; // Clave única para identificar el mensaje
+      messageApi.loading({ content: 'Cargando libros...', key, duration: 0 }); // Muestra el mensaje de carga
+
+      try {
+        const books = await getAllBooks(); // Llama a la API para obtener los libros
+        setCardsData(books); // Actualiza el estado con los datos obtenidos
+        messageApi.success({ content: 'Libros cargados correctamente.', key, duration: 2 }); // Muestra mensaje de éxito
+      } catch (error) {
+        console.error('Error al cargar los libros:', error);
+        messageApi.error({ content: 'Error al cargar los libros.', key, duration: 2 }); // Muestra mensaje de error
+      }
     };
     fetchData();
   }, [refresh]);
@@ -112,5 +122,5 @@ export const useCardsData = () => {
     doc.save("comprobante_prestamo.pdf");
   };
 
-  return { cardsData, loading, search, setSearch, handleSearch, refreshData, lend, alert, showAlert, setShowAlert };
+  return { contextHolder, cardsData, loading, search, setSearch, handleSearch, refreshData, lend, alert, showAlert, setShowAlert };
 };
