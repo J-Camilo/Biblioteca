@@ -104,7 +104,7 @@ function Home() {
                 </div>
             )}
             <AddBookModal isModalOpen={isModalOpen} handleToggleModal={handleToggleModal} />
-            <DetailLends isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
+            {/* <DetailLends isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} /> */}
         </div>
     );
 }

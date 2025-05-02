@@ -59,7 +59,7 @@ function Cards() {
     return (
         <>
             <div style={{ display: 'flex', gap: '10px', width: '100%', height: '80vh', flexWrap: 'wrap', overflowX: 'auto' }}>
-                {cardsData.map((card, index) =>
+                {cardsData.data?.map((card, index) =>
                     <Tooltip title="Toca para ver" key={index}>
                         <Card
                             key={card.id}
@@ -104,14 +104,13 @@ function Cards() {
                 handleToggleModal={handleToggleModal}
             >
                 {!seeEdit ?
-                    <>
+                    <div className="fade-in-up">
                         <div style={{ padding: 15 }}>
                             <div style={{ display: 'flex', gap: 10, width: '100%', marginBottom: 10 }}>
                                 <img src={dataModal.url} alt="imgLibrary" style={{ width: '30%', borderRadius: '10px' }} />
                                 <div style={{ width: '100%' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <strong>Nombre:</strong>
-                                        <span>{dataModal.name}</span>
+                                        <h1>{dataModal.name}</h1>
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                         <strong>Cantidad de stock:</strong>
@@ -124,17 +123,17 @@ function Cards() {
 
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                         <strong>ISBN:</strong>
-                                        <span>{dataModal.ISBN}</span>
+                                        <span>{dataModal.isbn}</span>
                                     </div>
                                 </div>
                             </div>
                             <div style={{ display: 'flex', flexDirection: "column" }}>
-                                <strong>Sypnosis:</strong>
+                                <strong><h2>Sypnosis</h2></strong>
                                 <span>{dataModal.sypnosis}</span>
                             </div>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: "row", marginTop: '10px', gap: 10 }}>
-                            <Button color="blue" variant="filled" block icon={<EditOutlined />} onClick={() => setSeeEdit(true)}>
+                        <div style={{ display: 'flex', flexDirection: "row",  marginTop: '10px', gap: 10 }}>
+                            <Button color="blue"  type="dashed" block icon={<EditOutlined />} onClick={() => setSeeEdit(true)}>
                                 Editar
                             </Button>
                             <Popconfirm title="¿Estás seguro de eliminar?" onConfirm={async () => { await deleteBook(dataModal.id); handleToggleModal("modal-details", false); refreshData(); }}>
@@ -142,21 +141,21 @@ function Cards() {
                                     Eliminar
                                 </Button>
                             </Popconfirm>
-                            <Button loading={loading} block type="dashed" icon={<AuditOutlined />} onClick={() => { lend(dataModal); }}>
+                            <Button loading={loading} block  disabled={!dataModal.quantity || dataModal.quantity <= 0}  type="dashed" icon={<AuditOutlined />} onClick={() => { lend(dataModal); }}>
                                 Prestar
                             </Button>
-                            <Button type="primary" block icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
-                                Comprar
+                            <Button type="primary" block disabled={!dataModal.quantity || dataModal.quantity <= 0} icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
+                                Vender
                             </Button>
                         </div>
-                    </>
+                    </div>
                     :
-                    <>
+                    <div className="fade-in-up">
                         <EditBookModal handleToggleModal={handleToggleModal} dataModal={dataModal} />
-                        <Button type="primary" block danger icon={<EditOutlined />} onClick={() => setSeeEdit(false)}>
+                        <Button type="primary" block danger  onClick={() => setSeeEdit(false)}>
                             Cancelar
                         </Button>
-                    </>
+                    </div>
                 }
                 {showAlert && (
                     <Alert

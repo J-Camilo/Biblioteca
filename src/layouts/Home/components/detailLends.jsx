@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Alert, Button, List, message } from "antd";
 import DrawerDynamic from "../../../components/drawer/drawer";
 import { getLendHistory, returnBook } from "../../../services/lend";
+import { useCardsData } from "../hooks/useCardData";
 
 const DetailLends = ({ isDrawerOpen, setIsDrawerOpen }) => {
     const [lendsData, setLendsData] = useState([]);
     const [alert, setAlert] = useState(null);
+    const { refreshData } = useCardsData();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,7 +29,8 @@ const DetailLends = ({ isDrawerOpen, setIsDrawerOpen }) => {
             setLendsData((prev) => prev.filter((lend) => lend.book_id !== lendId));
 
             setAlert({ type: "success", message: "Libro devuelto exitosamente." });
-            setTimeout(() => {setAlert(null); setIsDrawerOpen(false)}, 2000); 
+            refreshData();
+            setTimeout(() => { setAlert(null); setIsDrawerOpen(false); }, 2000);
         } catch (error) {
             console.error("Error al devolver el libro:", error);
             setAlert({ type: "error", message: "Ocurrió un error al devolver el libro." });

@@ -38,7 +38,7 @@ function Sign() {
         }}>
             {!showForm ?
                 <BlurText
-                    text={"Encruentra todos tus libros de una manera unica" || 'Default text'}
+                    text={"Encuentra todos tus libros de una manera única" || 'Default text'}
                     delay={30}
                     animateBy="letters"
                     fontSize={50}
@@ -59,12 +59,12 @@ function Sign() {
 
                         <Title level={3} style={{ marginBottom: 20 }}>Inicio de sesión</Title>
                         <Form.Item
-                            name="username"
-                            rules={[{ required: true, message: 'Por favor ingresa tu username.' }]}
+                            name="email"
+                            rules={[{ required: true, message: 'Por favor ingresa tu email.' }]}
                         >
-                            <Input prefix={<UserOutlined />} placeholder="Correo" name="username" value={formData.username} onChange={handleChange} />
+                            <Input prefix={<UserOutlined />} placeholder="Correo" name="email" value={formData.email} onChange={handleChange} />
                         </Form.Item>
-                        {errors.username && <p style={{ color: 'red' }} className="fade-in-login">{errors.username}</p>}
+                        {errors.email && <p style={{ color: 'red' }} className="fade-in-login">{errors.email}</p>}
                         {showPasswordInput && (
                             <Form.Item
                                 name="Contraseña"

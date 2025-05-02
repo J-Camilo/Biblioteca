@@ -1,10 +1,10 @@
 export const API_ENDPOINTS = {
-    USERS: {
-      ALL: '/users',
-      SAVE: '/users',
-      UPDATE: (id) => `/users/${id}`,
-      GET_BY_ID: (id) => `/users/${id}`,
-      DELETE: (id) => `/users/${id}`,
+    PEOPLE: {
+      ALL: '/people',
+      SAVE: '/people',
+      UPDATE: (id) => `/people/${id}`,
+      GET_BY_ID: (id) => `/people/${id}`,
+      DELETE: (id) => `/people/${id}`,
     },
     BOOKS: {
       ALL: '/books',

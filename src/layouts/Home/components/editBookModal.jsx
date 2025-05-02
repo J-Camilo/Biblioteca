@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import {  useState } from "react";
+import { EditOutlined  } from "@ant-design/icons";
 import { Alert, Button, Form, Input } from "antd";
 import { updateBook } from "../../../services/books";
 import { useCardsData } from "../hooks/useCardData";
@@ -21,8 +21,7 @@ const EditBookModal = ({ handleToggleModal, dataModal }) => {
                 setShowAlert(true);
                 setWait(false);
                 form.resetFields();
-                window.location.reload();
-                setTimeout(() => { handleToggleModal('modal-details', false); setShowAlert(false); refreshData(); }, 2000);
+                setTimeout(() => { handleToggleModal('modal-details', false); setShowAlert(false); refreshData(); window.location.reload(); }, 2000);
             } else {
                 setAlert({ type: 'error', message: 'Error al editar el libro' });
                 setShowAlert(true);
@@ -64,7 +63,7 @@ const EditBookModal = ({ handleToggleModal, dataModal }) => {
                 <Form.Item
                     name="isbn"
                 >
-                    <Input placeholder={dataModal.ISBN} />
+                    <Input placeholder={dataModal.isbn} />
                 </Form.Item>
 
                 <Form.Item
@@ -106,7 +105,7 @@ const EditBookModal = ({ handleToggleModal, dataModal }) => {
                     <Button
                         type="primary"
                         htmlType="submit"
-                        icon={<PlusOutlined />}
+                        icon={<EditOutlined />}
                         loading={wait}
                         block
                     >

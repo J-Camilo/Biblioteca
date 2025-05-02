@@ -14,7 +14,7 @@ export const useCardsData = () => {
   const [showAlert, setShowAlert] = useState(false);
 
   const refreshData = () => {
-    setRefresh((prev) => prev + 1);
+    setRefresh(prev => prev + 1);
   }
 
   useEffect(() => {
