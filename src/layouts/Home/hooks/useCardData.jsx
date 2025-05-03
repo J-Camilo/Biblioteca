@@ -15,6 +15,7 @@ export const useCardsData = () => {
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [selectField, setSelectField] = useState('');
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -46,7 +47,7 @@ export const useCardsData = () => {
     messageApi.loading({ content: 'Buscando libros...', key, duration: 0 });
   
     try {
-      const books = await searchBooks(value, 'name'); 
+      const books = await searchBooks(value, selectField); 
       setCardsData(books); // Actualiza el estado con los resultados de la búsqueda
       messageApi.success({ content: 'Búsqueda completada.', key, duration: 2 });
     } catch (error) {
@@ -56,6 +57,7 @@ export const useCardsData = () => {
   };
 
   const resetFilters = () => {
+    setSelectField('');
     fetchData(); // Carga todos los libros nuevamente
   };
 
@@ -165,5 +167,5 @@ export const useCardsData = () => {
     doc.save("comprobante_prestamo.pdf");
   };
 
-  return { cardsDataUser, contextHolder, cardsData, loading, search, setSearch, handleSearch, refreshData, lend, alert, showAlert, setShowAlert, resetFilters };
+  return { cardsDataUser, contextHolder, cardsData, loading, search, setSearch, handleSearch, refreshData, lend, alert, showAlert, setShowAlert, resetFilters, selectField, setSelectField};
 };
