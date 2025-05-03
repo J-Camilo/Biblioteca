@@ -28,7 +28,7 @@ export const postFormUrlEncoded = async (url, data) => {
 
     const response = await axiosInstance.post(url, data);
     // Guardar los datos del usuario en una cookie encriptada
-    setEncryptedCookie('auth', response.data, { expires: 1 });
+    setEncryptedCookie('auth', response.data);
     return response.data;
   } catch (error) {
     throw error;
