@@ -1,12 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Typography, Card, Tooltip } from "antd";
+import BookDetailsModal from "./BookDetailsModal";
 import { useCardsData } from "../hooks/useCardData";
-import { useMouseEffect } from "../hooks/useMouseEffect";
-import { Button, Typography, Card, Tooltip, Alert } from "antd";
-import { AuditOutlined, DeleteOutlined, PayCircleOutlined } from "@ant-design/icons";
-import imageprueba from "../../../assets/Screenshot 2025-03-30 144759.png"
 import { deleteBook } from "../../../services/books";
-import ModalCard from "../../../components/modal/modal";
+import { useMouseEffect } from "../hooks/useMouseEffect";
+import useBookDetailsModal from "../hooks/useBookDetailsModal";
+import imageprueba from "../../../assets/Screenshot 2025-03-30 144759.png"
 
 const { Title } = Typography;
 
@@ -26,11 +25,17 @@ const styleCardApp = {
     transition: "transform 0.3s ease",
 };
 
-function Cards() {
-    const { cardsData, refreshData, lend, alert, showAlert, setShowAlert } = useCardsData();
+function Cards({cardsData, refreshData}) {
+    const { cardsDataUser, lend, alert, showAlert, setShowAlert } = useCardsData();
+    const {
+        seeEdit,
+        setSeeEdit,
+        selectedUser,
+        handleUserChange,
+    } = useBookDetailsModal();
+
     const [isModalOpen, setIsModalOpen] = useState({});
     const [dataModal, setDataModal] = useState('');
-    const navigate = useNavigate();
 
     const handleToggleModal = (index, value) => {
         setIsModalOpen(prev => ({
@@ -58,7 +63,7 @@ function Cards() {
     return (
         <>
             <div style={{ display: 'flex', gap: '10px', width: '100%', height: '80vh', flexWrap: 'wrap', overflowX: 'auto' }}>
-                {cardsData.map((card, index) =>
+                {cardsData?.map((card, index) =>
                     <Tooltip title="Toca para ver" key={index}>
                         <Card
                             key={card.id}
@@ -67,7 +72,6 @@ function Cards() {
                             onMouseLeave={() => handleMouseLeaveCardApp(card.id)}
                             onClick={() => handleCardClick(card)}
                         >
-                            {/* Imagen */}
                             <img
                                 src={card.url ? card.url : imageprueba}
                                 alt="Image"
@@ -77,7 +81,6 @@ function Cards() {
                                 }}
                             />
 
-                            {/* Título */}
                             <Title level={5} style={{ color: "white", marginBottom: 0, textAlign: "center", overflow: "hidden" }}>
                                 <span className="animated-text">{truncateText(card.name, 15)}</span>
                             </Title>
@@ -92,67 +95,30 @@ function Cards() {
                                     <span>{card.quantity}</span>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <strong>ISBN:</strong>
-                                    <span>{card.ISBN}</span>
+                                    <strong>isbn:</strong>
+                                    <span>{card.isbn}</span>
                                 </div>
                             </div>
                         </Card>
                     </Tooltip>
                 )}
             </div>
-            <ModalCard
-                index={'modal-details'}
-                title="Detalles del libro"
+            <BookDetailsModal
                 isModalOpen={isModalOpen}
                 handleToggleModal={handleToggleModal}
-            >
-                <div style={{ padding: 15 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <strong>Nombre:</strong>
-                        <span>{dataModal.name}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <strong>Cantidad de stock:</strong>
-                        <span>{dataModal.quantity}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <strong>Precio:</strong>
-                        <span>${dataModal.price}</span>
-                    </div>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <strong>ISBN:</strong>
-                        <span>{dataModal.ISBN}</span>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: "column" }}>
-                        <strong>sypnosis:</strong>
-                        <span>{dataModal.sypnosis}</span>
-                    </div>
-                </div>
-                <div style={{ display: 'flex', flexDirection: "column", marginTop: '10px', gap: 10 }}>
-                    <Button type="primary" icon={<AuditOutlined />} onClick={() => { lend(dataModal); }}>
-                        Prestar
-                    </Button>
-                    <Button type="primary" icon={<PayCircleOutlined />} onClick={() => navigate(`/payment/book/${dataModal.id}`)}>
-                        Comprar
-                    </Button>
-                    <Button type="primary" icon={<DeleteOutlined />} onClick={async () => { await deleteBook(dataModal.id); handleToggleModal("modal-details", false); refreshData(); }}>
-                        Eliminar
-                    </Button>
-                </div>
-                {showAlert && (
-                    <Alert
-                        message={alert.message}
-                        className="fade-in-up"
-                        type={alert.type}
-                        showIcon
-                        closable
-                        onClose={() => setShowAlert(false)}
-                        style={{ marginTop: '20px' }}
-                    />
-                )}
-            </ModalCard>
-
+                dataModal={dataModal}
+                seeEdit={seeEdit}
+                setSeeEdit={setSeeEdit}
+                selectedUser={selectedUser}
+                handleUserChange={handleUserChange}
+                lend={lend}
+                cardsDataUser={cardsDataUser}
+                deleteBook={deleteBook}
+                refreshData={refreshData}
+                showAlert={showAlert}
+                setShowAlert={setShowAlert}
+                alert={alert}
+            />
         </>
     );
 }

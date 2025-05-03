@@ -1,14 +1,14 @@
 import { API_ENDPOINTS } from '../context/apiEndpoints';
-import { get, postJson } from './apiHelper';
+import { get, postJson, put } from './apiHelper';
 
 export const lendBook = async (lendData) => {
   return postJson(API_ENDPOINTS.LENDS.LEND_BOOK, lendData);
 };
 
-export const getLendHistory = async (userId) => {
-  return get(API_ENDPOINTS.LEND_HISTORY.HISTORY(userId));
+export const getLendHistory = async () => {
+  return get(API_ENDPOINTS.LENDS.LEND_BOOK);
 };
 
-export const returnBook = async (userId, bookId) => {
-  return postJson(API_ENDPOINTS.RETURN_BOOKS.RETURN(userId, bookId));
+export const returnBook = async (userId, record) => {
+  return postJson(API_ENDPOINTS.RETURN_BOOKS.RETURN(userId), record);
 };

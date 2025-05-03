@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 
 export const useValidations = () => {
-    const [formData, setFormData] = useState({ username: '', password: '' });
-    const [errors, setErrors] = useState({ username: '', password: '' });
+    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [errors, setErrors] = useState({ email: '', password: '' });
     const [showPasswordInput, setShowPasswordInput] = useState(false);
     const [showSignInButton, setShowSignInButton] = useState(false);
     const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
-        const usernameTimeout = setTimeout(() => {
-            validateField('username', formData.username);
+        const emailTimeout = setTimeout(() => {
+            validateField('email', formData.email);
         }, 500);
 
-        return () => clearTimeout(usernameTimeout);
-    }, [formData.username]);
+        return () => clearTimeout(emailTimeout);
+    }, [formData.email]);
 
     useEffect(() => {
         if (showPasswordInput) {
@@ -33,7 +33,7 @@ export const useValidations = () => {
 
     const validateField = (field, value) => {
         let error = '';
-        if (field === 'username') {
+        if (field === 'email') {
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
                 error = 'Por favor ingresa un correo válido.';
                 setShowPasswordInput(false);

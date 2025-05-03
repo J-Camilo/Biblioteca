@@ -17,17 +17,13 @@ const AddBookModal = ({ isModalOpen, handleToggleModal }) => {
         try {
             setWait(true);
             const response = await saveBook(values);
-            if (response.success) {
-                setAlert({ type: 'success', message: 'Guardado con éxito' });
-                setShowAlert(true);
-                setWait(false);
-                form.resetFields();
-                window.location.reload();
-                setTimeout(() => { handleToggleModal('modal-add', false); setShowAlert(false); refreshData();}, 2000);
-            } else {
-                setAlert({ type: 'error', message: 'Error al guardar el libro' });
-                setShowAlert(true);
-            }
+            setAlert({ type: 'success', message: 'Guardado con éxito' });
+            setShowAlert(true);
+            setWait(false);
+            form.resetFields();
+            window.location.reload();
+            setTimeout(() => { handleToggleModal('modal-add', false); setShowAlert(false); refreshData(); }, 2000);
+
         } catch (error) {
             setAlert({ type: 'error', message: 'Error inesperado al guardar el libro' });
             setShowAlert(true);

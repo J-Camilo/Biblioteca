@@ -9,24 +9,4 @@ const axiosInstance = axios.create({
   },
 });
 
-// Interceptores para manejar tokens y errores globales
-// axiosInstance.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem('authToken');
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-
-//     // Si el encabezado Content-Type es x-www-form-urlencoded, transformar los datos
-//     if (config.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
-//       config.data = qs.stringify(config.data); // Convertir datos a formato URL-encoded
-//     }
-
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
 export default axiosInstance;

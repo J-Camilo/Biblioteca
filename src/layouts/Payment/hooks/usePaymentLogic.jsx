@@ -13,9 +13,7 @@ const usePaymentLogic = () => {
     const fetchData = async () => {
       try {
         const books = await getBookById(idbook);
-        if (books && books.length > 0) {
-          setOneBook(books[0]); // Asigna el primer libro encontrado
-        }
+          setOneBook(books); // Asigna el primer libro encontrado
       } catch (error) {
         console.error("Error al obtener el libro:", error);
       }

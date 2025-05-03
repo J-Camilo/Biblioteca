@@ -22,25 +22,11 @@ export const postJson = async (url, data) => {
   }
 };
 
-function toFormUrlEncoded(obj) {
-  const params = new URLSearchParams();
-  for (let key in obj) {
-    params.append(key, obj[key]);
-  }
-  return params;
-}
-
 // Función para enviar datos en formato x-www-form-urlencoded
 export const postFormUrlEncoded = async (url, data) => {
   try {
-    const dataForm = toFormUrlEncoded(data);
 
-    const response = await axiosInstanceUrlencoded.post(url, dataForm, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
-
+    const response = await axiosInstance.post(url, data);
     // Guardar los datos del usuario en una cookie encriptada
     setEncryptedCookie('auth', response.data, { expires: 1 });
     return response.data;
