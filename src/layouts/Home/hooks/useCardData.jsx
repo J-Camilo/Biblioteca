@@ -1,6 +1,6 @@
 import { jsPDF } from "jspdf";
 import { useEffect, useState } from "react";
-import { getAllBooks } from "../../../services/books";
+import { getAllBooks, searchBooks } from "../../../services/books";
 import { lendBook } from "../../../services/lend";
 import { message } from "antd";
 import { getAllUsers } from "../../../services/users";
@@ -28,12 +28,35 @@ export const useCardsData = () => {
     
     try {
       const books = await getAllBooks(); // Llama a la API para obtener los libros
-      setCardsData(books); // Actualiza el estado con los datos obtenidos
+      setCardsData(books.data); // Actualiza el estado con los datos obtenidos
       messageApi.success({ content: 'Libros cargados correctamente.', key, duration: 2 }); // Muestra mensaje de éxito
     } catch (error) {
       console.error('Error al cargar los libros:', error);
       messageApi.error({ content: 'Error al cargar los libros.', key, duration: 2 }); // Muestra mensaje de error
     }
+  };
+
+  const handleSearch = async (value) => {
+    if (!value.trim()) {
+      fetchData(); // Si no hay término de búsqueda, carga todos los libros
+      return;
+    }
+  
+    const key = 'searchBooks'; // Clave única para identificar el mensaje
+    messageApi.loading({ content: 'Buscando libros...', key, duration: 0 });
+  
+    try {
+      const books = await searchBooks(value, 'name'); 
+      setCardsData(books); // Actualiza el estado con los resultados de la búsqueda
+      messageApi.success({ content: 'Búsqueda completada.', key, duration: 2 });
+    } catch (error) {
+      console.error('Error al buscar libros:', error);
+      messageApi.error({ content: 'Error al buscar libros.', key, duration: 2 });
+    }
+  };
+
+  const resetFilters = () => {
+    fetchData(); // Carga todos los libros nuevamente
   };
 
   const fetchDataUsers = async () => {
@@ -49,10 +72,6 @@ export const useCardsData = () => {
     fetchDataUsers();
     fetchData();
   }, [refresh]);
-
-  const handleSearch = (value) => {
-
-  };
 
   const formatDate = (date) => {
     const year = date.getFullYear();
@@ -146,5 +165,5 @@ export const useCardsData = () => {
     doc.save("comprobante_prestamo.pdf");
   };
 
-  return { cardsDataUser, contextHolder, cardsData, loading, search, setSearch, handleSearch, refreshData, lend, alert, showAlert, setShowAlert };
+  return { cardsDataUser, contextHolder, cardsData, loading, search, setSearch, handleSearch, refreshData, lend, alert, showAlert, setShowAlert, resetFilters };
 };

@@ -25,8 +25,8 @@ const styleCardApp = {
     transition: "transform 0.3s ease",
 };
 
-function Cards() {
-    const { cardsDataUser, contextHolder, cardsData, refreshData, lend, alert, showAlert, setShowAlert } = useCardsData();
+function Cards({cardsData}) {
+    const { cardsDataUser, refreshData, lend, alert, showAlert, setShowAlert } = useCardsData();
     const {
         seeEdit,
         setSeeEdit,
@@ -62,9 +62,8 @@ function Cards() {
 
     return (
         <>
-            {contextHolder}
             <div style={{ display: 'flex', gap: '10px', width: '100%', height: '80vh', flexWrap: 'wrap', overflowX: 'auto' }}>
-                {cardsData.data?.map((card, index) =>
+                {cardsData?.map((card, index) =>
                     <Tooltip title="Toca para ver" key={index}>
                         <Card
                             key={card.id}

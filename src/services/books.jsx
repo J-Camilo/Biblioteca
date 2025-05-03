@@ -17,6 +17,10 @@ export const getBookById = async (id) => {
   return get(API_ENDPOINTS.BOOKS.GET_BY_ID(id));
 };
 
+export const searchBooks = async (value, name) => {
+  return get(API_ENDPOINTS.BOOKS.SEARCH(value, name));
+};
+
 export const deleteBook = async (id) => {
   return remove(API_ENDPOINTS.BOOKS.DELETE(id));
 };

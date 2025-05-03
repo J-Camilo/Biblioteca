@@ -1,7 +1,7 @@
 import Cards from "./components/cards";
 import React, { useState, useEffect } from "react";
 import { Button, Typography, Input, Alert } from "antd";
-import {  PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 const { Title } = Typography;
@@ -9,11 +9,13 @@ const { Title } = Typography;
 import AddBookModal from "./components/addBookModal";
 import imgPay from "../../assets/icons8-loading.gif";
 import Nav from "../../components/Nav/Nav";
+import { useCardsData } from "./hooks/useCardData";
+import BookSearch from "./components/BookSearch";
 
 function Home() {
-    const [isContentLoaded, setIsContentLoaded] = useState(false);
-
+    const { handleSearch, cardsData, contextHolder, resetFilters } = useCardsData();
     const [isModalOpen, setIsModalOpen] = useState({});
+    const [isContentLoaded, setIsContentLoaded] = useState(false);
 
     const handleToggleModal = (index, value) => {
         setIsModalOpen((prev) => ({
@@ -45,6 +47,7 @@ function Home() {
             transform: "translate(-50%, -50%)",
             backdropFilter: "blur(4px)",
         }}>
+            {contextHolder}
             {!isContentLoaded && (
                 <div style={{ display: "flex", gap: 10, alignItems: "center", background: "white", padding: 7, borderRadius: 10 }} className="fade-in-up">
                     <Title level={5} style={{ marginBottom: 0 }}>Cargando contenido</Title>
@@ -59,15 +62,8 @@ function Home() {
                     width: "100%",
                 }} className="fade-in-up">
                     <Nav
-                    title="Lista de libros"
+                        title="Lista de libros"
                     >
-                        {/* <Search
-                                placeholder="Busca el libro"
-                                enterButton="Buscar"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                onSearch={handleSearch}
-                            /> */}
                         <Button
                             type="dashed"
                             icon={<PlusOutlined />}
@@ -80,14 +76,9 @@ function Home() {
                     <div style={{ display: "flex", gap: 10, height: "60vh" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: 10, padding: 20, position: "static", background: "black", width: "18%", borderRadius: 10, marginTop: 20 }}>
                             <Title level={2} style={{ marginBottom: 0, color: "white" }}>Filtros</Title>
-                            <Alert
-                                message="info"
-                                description="Filtros no disponibles versión de pruebas iberoamericana."
-                                type="info"
-                                showIcon
-                            />
+                            <BookSearch handleSearch={handleSearch} resetFilters={resetFilters} />
                         </div>
-                        <Cards />
+                        <Cards cardsData={cardsData}/>
                     </div>
                 </div>
             )}

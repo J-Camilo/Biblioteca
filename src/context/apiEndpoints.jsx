@@ -12,6 +12,7 @@ export const API_ENDPOINTS = {
     UPDATE: (id) => `/books/${id}`,
     GET_BY_ID: (id) => `/books/${id}`,
     DELETE: (id) => `/books/${id}`,
+    SEARCH: (prefix, field) => `/books?prefix=${prefix}&field=${field}`
   },
   LENDS: {
     LEND_BOOK: '/lend',
