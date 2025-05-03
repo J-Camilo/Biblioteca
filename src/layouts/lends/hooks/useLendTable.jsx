@@ -46,11 +46,13 @@ const useLendTable = () => {
 
   // Función para devolver un libro
   const handleReturnBook = async (lendId, data) => {
+    messageApi.loading({ content: 'Procesando...', key: 1, duration: 0 });
     try {
       await returnBook(lendId, data); // Llamar a la API para marcar el libro como devuelto
-      fetchLendData(); // Refrescar los datos después de devolver el libro
+     window.location.reload();
     } catch (err) {
       console.error('Error al devolver el libro:', err);
+      messageApi.error({ content: err.response.data.message || "No se puede devolver este libro intenta de nuevo", key: 1, duration: 2 });
     }
   };
 

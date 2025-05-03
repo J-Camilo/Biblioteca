@@ -10,5 +10,5 @@ export const getLendHistory = async () => {
 };
 
 export const returnBook = async (userId, record) => {
-  return put(API_ENDPOINTS.RETURN_BOOKS.RETURN(userId), record);
+  return postJson(API_ENDPOINTS.RETURN_BOOKS.RETURN(userId), record);
 };

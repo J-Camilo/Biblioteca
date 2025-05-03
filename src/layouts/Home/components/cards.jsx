@@ -25,8 +25,8 @@ const styleCardApp = {
     transition: "transform 0.3s ease",
 };
 
-function Cards({cardsData}) {
-    const { cardsDataUser, refreshData, lend, alert, showAlert, setShowAlert } = useCardsData();
+function Cards({cardsData, refreshData}) {
+    const { cardsDataUser, lend, alert, showAlert, setShowAlert } = useCardsData();
     const {
         seeEdit,
         setSeeEdit,
@@ -93,6 +93,10 @@ function Cards({cardsData}) {
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <strong>Stock:</strong>
                                     <span>{card.quantity}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <strong>isbn:</strong>
+                                    <span>{card.isbn}</span>
                                 </div>
                             </div>
                         </Card>

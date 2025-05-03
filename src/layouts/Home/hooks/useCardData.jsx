@@ -29,7 +29,7 @@ export const useCardsData = () => {
     try {
       const books = await getAllBooks(); // Llama a la API para obtener los libros
       setCardsData(books.data); // Actualiza el estado con los datos obtenidos
-      messageApi.success({ content: 'Libros cargados correctamente.', key, duration: 2 }); // Muestra mensaje de éxito
+      messageApi.success({ content: 'Listo!', key, duration: 2 }); // Muestra mensaje de éxito
     } catch (error) {
       console.error('Error al cargar los libros:', error);
       messageApi.error({ content: 'Error al cargar los libros.', key, duration: 2 }); // Muestra mensaje de error

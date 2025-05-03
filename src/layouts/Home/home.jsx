@@ -1,21 +1,18 @@
 import Cards from "./components/cards";
-import React, { useState, useEffect } from "react";
-import { Button, Typography, Input, Alert } from "antd";
+import React, { useState } from "react";
+import { Button, Typography  } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
-const { Search } = Input;
 const { Title } = Typography;
 
 import AddBookModal from "./components/addBookModal";
-import imgPay from "../../assets/icons8-loading.gif";
-import Nav from "../../components/Nav/Nav";
 import { useCardsData } from "./hooks/useCardData";
 import BookSearch from "./components/BookSearch";
+import Nav from "../../components/Nav/Nav";
 
 function Home() {
-    const { handleSearch, cardsData, contextHolder, resetFilters } = useCardsData();
+    const { handleSearch, cardsData, contextHolder, resetFilters, refreshData } = useCardsData();
     const [isModalOpen, setIsModalOpen] = useState({});
-    const [isContentLoaded, setIsContentLoaded] = useState(false);
 
     const handleToggleModal = (index, value) => {
         setIsModalOpen((prev) => ({
@@ -23,15 +20,6 @@ function Home() {
             [index]: value,
         }));
     };
-
-    // Temporizador para simular la carga
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsContentLoaded(true);
-        }, 1500);
-
-        return () => clearTimeout(timer);
-    }, []);
 
     return (
         <div style={{
@@ -48,14 +36,6 @@ function Home() {
             backdropFilter: "blur(4px)",
         }}>
             {contextHolder}
-            {!isContentLoaded && (
-                <div style={{ display: "flex", gap: 10, alignItems: "center", background: "white", padding: 7, borderRadius: 10 }} className="fade-in-up">
-                    <Title level={5} style={{ marginBottom: 0 }}>Cargando contenido</Title>
-                    <img alt="Logo" src={imgPay} style={{ width: 35 }} />
-                </div>
-            )}
-
-            {isContentLoaded && (
                 <div style={{
                     padding: 20,
                     height: "90vh",
@@ -81,8 +61,7 @@ function Home() {
                         <Cards cardsData={cardsData}/>
                     </div>
                 </div>
-            )}
-            <AddBookModal isModalOpen={isModalOpen} handleToggleModal={handleToggleModal} />
+            <AddBookModal isModalOpen={isModalOpen} handleToggleModal={handleToggleModal} refreshData={refreshData}/>
         </div>
     );
 }

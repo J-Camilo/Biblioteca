@@ -24,7 +24,7 @@ export const API_ENDPOINTS = {
   //   RETURN: (user_id, book_id) => `/return/${user_id}/${book_id}`,
   // },  
   RETURN_BOOKS: {
-    RETURN: (user_id) => `/lend/${user_id}`,
+    RETURN: (user_id) => `/return/${user_id}`,
   },
   AUTH: {
     REGISTER: '/register',

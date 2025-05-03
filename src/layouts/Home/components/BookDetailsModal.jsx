@@ -67,7 +67,7 @@ const BookDetailsModal = ({
                             onConfirm={async () => {
                                 await deleteBook(dataModal.id);
                                 handleToggleModal('modal-details', false);
-                                refreshData();
+                                window.location.reload();
                             }}
                         >
                             <Button type="primary" block danger icon={<DeleteOutlined />}>

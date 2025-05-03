@@ -5,7 +5,7 @@ const BookSearch = ({ handleSearch, resetFilters }) => {
   return (
     <div style={{ marginBottom: 20 }}>
       <Input.Search
-        placeholder="Buscar libro"
+        placeholder="Buscar nombre"
         onSearch={handleSearch} // Llama a handleSearch cuando se realiza una búsqueda
         enterButton
         style={{ width: "100%" }}
