@@ -19,7 +19,7 @@ const useEditableTable = () => {
                 const reversedData = [...response.data].reverse();
                 setData(reversedData);
             }
-            messageApi.success({ content: 'Usuarios cargados correctamente.', key, duration: 2 });
+            messageApi.success({ content: 'Listo! 😃', key, duration: 2 });
         } catch (error) {
             console.error('Error al obtener los usuarios:', error);
             messageApi.error({ content: 'Error al cargar los usuarios.', key, duration: 2 });

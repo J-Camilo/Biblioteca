@@ -4,11 +4,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from './context/AuthContext';
 
 import Home from './layouts/Home/home';
+import Lends from './layouts/lends/Lends';
 import People from './layouts/People/People';
 import ProtectedRoute from './ProtectedRoute';
 import Payment from './layouts/Payment/payment';
 import Sign from './layouts/Autentification/Login';
-
 
 function App() {
   return (
@@ -36,8 +36,8 @@ function App() {
             {/* Rutas protegidas */}
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
+              <Route path="/lends" element={<Lends />} />
               <Route path="/people" element={<People />} />
-              {/* <Route path="/lends" element={<Payment />} /> */}
               <Route path="/payment/book/:idbook" element={<Payment />} />
             </Route>
           </Routes>

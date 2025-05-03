@@ -13,8 +13,8 @@ export const updateUser = async (id, updatedData) => {
   return put(API_ENDPOINTS.PEOPLE.UPDATE(id), updatedData);
 };
 
-export const getUserById = async (id) => {
-  return get(API_ENDPOINTS.USERS.GET_BY_ID(id));
+export const getUserById = async (id) => {  
+  return get(API_ENDPOINTS.PEOPLE.GET_BY_ID(id));
 };
 
 export const deleteUser = async (id) => {
