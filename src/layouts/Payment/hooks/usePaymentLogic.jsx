@@ -70,7 +70,7 @@ const usePaymentLogic = () => {
       price: oneBook.price,
       sypnosis: oneBook.sypnosis,
       url: oneBook.url,
-      isbn: oneBook.ISBN,
+      isbn: oneBook.isbn,
       state: 1
     }
 
