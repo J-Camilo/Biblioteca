@@ -8,7 +8,7 @@ import ModalCard from '../../components/modal/modal';
 import AddUserForm from './components/addUserForm';
 
 const People = () => {
-  const { refreshData, messageApi, contextHolder, form, data, mergedColumns, edit, save, cancel } = useEditableTable();
+  const { fetchUsers, messageApi, contextHolder, form, data, mergedColumns, edit, save, cancel } = useEditableTable();
 
   const [isModalOpen, setIsModalOpen] = useState({});
 
@@ -77,7 +77,7 @@ const People = () => {
         isModalOpen={isModalOpen}
         handleToggleModal={handleToggleModal}
       >
-        < AddUserForm refreshData={refreshData} messageApi={messageApi}  handleToggleModal={handleToggleModal}/>
+        < AddUserForm refreshData={fetchUsers} messageApi={messageApi}  handleToggleModal={handleToggleModal}/>
       </ModalCard>
     </>
   );

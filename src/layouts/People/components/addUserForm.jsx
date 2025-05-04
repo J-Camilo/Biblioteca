@@ -15,7 +15,7 @@ const AddUserForm = ({ refreshData, messageApi, handleToggleModal }) => {
             setTimeout(() => { 
                 handleToggleModal('modal-add', false); // Cierra el modal
                 form.resetFields(); // Limpia el formulario
-                window.location.reload();
+                refreshData();
             })
         } catch (error) {
             console.error('Error al crear el usuario:', error);

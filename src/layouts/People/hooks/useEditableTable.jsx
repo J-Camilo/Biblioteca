@@ -5,7 +5,6 @@ import { deleteUser, getAllUsers, updateUser } from '../../../services/users';
 const useEditableTable = () => {
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
-    const [refresh, setRefresh] = useState(0);
     const [editingKey, setEditingKey] = useState('');
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -26,13 +25,9 @@ const useEditableTable = () => {
         }
     };
 
-    const refreshData = () => {
-        setRefresh(prev => prev + 1);
-    }
-
     useEffect(() => {
         fetchUsers(); // Cargar datos al montar el componente
-    }, [refresh]);
+    }, []);
 
     const isEditing = (record) => record.id === editingKey;
 
@@ -159,7 +154,7 @@ const useEditableTable = () => {
     });
 
     return {
-        refreshData,
+        fetchUsers,
         messageApi,
         contextHolder,
         form,
